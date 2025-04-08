@@ -122,7 +122,9 @@ const RegisterAgreement = ({route}) => {
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                 >
-                    <KeyboardAwareScrollView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
+                    <KeyboardAwareScrollView behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                     contentContainerStyle={{ flex: 1 }}>
+
                         <View style={{ flex: 1, }}>
                             <View style={{ flex: 0.1, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={[TextStyles.TEXTSTYLE_PARA_20, { marginBottom: 5, textAlign: 'center' }]}>Agreement</Text>

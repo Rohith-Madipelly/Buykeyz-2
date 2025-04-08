@@ -144,10 +144,23 @@ const ForgetPassPage = () => {
                             <TouchableOpacity style={{
                                 position: 'absolute',
                                 marginTop: Metrics.rfv(20), marginLeft: LEFT_AND_RIGHT_PADDING, borderRadius: 30,
-                                backgroundColor: PRIMARY_LIGHT_COLOR,
+                                // backgroundColor: "red",
+                                padding: 5,
+                                justifyContent:'center',
+                                alignItems:'center'
+
                             }}
                                 onPress={() => { navigation.goBack() }}>
-                                <BackIcon />
+                                <View style={{
+                                    // position: 'absolute',
+                                    // marginTop: Metrics.rfv(20), marginLeft: LEFT_AND_RIGHT_PADDING, 
+                                    borderRadius: 30,
+                                    backgroundColor: PRIMARY_LIGHT_COLOR,
+
+                                }}>
+                                    <BackIcon />
+
+                                </View>
                             </TouchableOpacity>
                             <View style={{ flex: 0.1, justifyContent: 'flex-end', alignItems: 'center' }}>
                                 <Image

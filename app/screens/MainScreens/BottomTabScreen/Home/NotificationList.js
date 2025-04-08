@@ -1,6 +1,6 @@
 import { FlatList, Platform, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
-import { useToast } from 'react-native-toast-notifications'
+import { Toast, useToast } from 'react-native-toast-notifications'
 import { useDispatch, useSelector } from 'react-redux'
 import GlobalStyles from '../../../../components/UI/config/GlobalStyles'
 import CustomStatusBar from '../../../../components/UI/CustomStatusBar/CustomStatusBar'
@@ -18,6 +18,7 @@ import Metrics from '../../../../utils/resposivesUtils/Metrics'
 import NextIcon from '../../../../assets/svg/NextIcon'
 import LoadingImage from '../../../../components/UI/ImageConatiners/LoadingImage'
 import CustomToolKitHeader from '../../../../components/UI/CustomToolKitHeader'
+import { FontAwesome6 } from '@expo/vector-icons'
 
 const NotificationList = ({ route }) => {
     const { params } = route;
@@ -50,7 +51,7 @@ const NotificationList = ({ route }) => {
             const res = await Get_Notification_API(tokenn)
             if (res) {
                 console.log("", res.data)
-                setNotificationList(res.data)
+                setNotificationList(res.data.allNotifications)
             }
 
         } catch (error) {
@@ -97,7 +98,7 @@ const NotificationList = ({ route }) => {
                     <View style={{ flex: 0.1, justifyContent: 'center', alignItems: 'center' }}>
                         <Image style={{ width: 24, height: 24 }}
                             source={require("../../../../assets/images/Profile/chevron_right.png")}
-                           />
+                        />
                     </View>
                 </TouchableOpacity>
                 <View style={{ borderBottomColor: '#B0B0C1', borderBottomWidth: 1, marginHorizontal: 15, marginTop: 10 }}></View>
@@ -124,9 +125,41 @@ const NotificationList = ({ route }) => {
 
 
                 <FlatList
-                    data={notificationList || []}
+                    data={notificationList}
                     // keyExtractor={(item, index) => index.toString()}
-                    renderItem={renderItem1}
+                    renderItem={({ item, index }) => (
+                        <TouchableOpacity key={index}
+
+                            onPress={() => {
+                                if(item.data.navigateTo){
+                                     navigation.navigate(`${item.data.navigateTo}`) 
+                                }else{
+                                    
+                                }
+                            }}
+                            style={{
+
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                // height: Metrics.rfv(57),
+                                paddingHorizontal: 15,
+                                borderBottomColor: '#DDDDDD', borderBottomWidth: 1,
+                                // marginHorizontal: 20,
+                                // marginTop: 10,
+                                paddingBottom: 10
+
+                            }}>
+                            <View style={{ width: "90%" }}>
+                                <Text style={{ fontSize: Metrics.rfv(15), color: '#474464', fontWeight: 400, fontFamily: 'Poppins-Medium', marginTop: 10 }} numberOfLines={2}>{item.title}</Text>
+                                <Text style={{ fontSize: Metrics.rfv(10), color: '#474464', fontWeight: 400, fontFamily: 'Poppins-Medium', }} numberOfLines={3}>{item.body}</Text>
+                            </View>
+
+                            {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                <FontAwesome6 name="arrow-right" size={15} color="black" style={{ marginTop: 12 }} />
+                            </View> */}
+                            {/* <Text style={{ fontSize: Metrics.rfv(15), color: '#474464', fontWeight: 400,fontFamily:'Poppins-Medium',marginTop:10}}>LK</Text> */}
+                        </TouchableOpacity>
+                    )}
                 />
             </View>
         </View>

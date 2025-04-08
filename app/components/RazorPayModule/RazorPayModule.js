@@ -1,12 +1,12 @@
 import { Alert, StyleSheet } from 'react-native'
-// import RazorpayCheckout from 'react-native-razorpay';
+import RazorpayCheckout from 'react-native-razorpay';
 import { PAYOUT_VERIFY_ORDER_API } from '../../network/ApiCalls';
 
 const RazorPayModule = async (amount, order, tokken, navigation) => {
     // const toast =useToast()
     console.log(
         "cmsh", order
-    ) 
+    )
     try {
         if (order) {
             const options = {
@@ -28,16 +28,16 @@ const RazorPayModule = async (amount, order, tokken, navigation) => {
                 },
             }
             setTimeout(() => {
-                // RazorpayCheckout.open(options)
-                //     .then((data) => {
-                //         console.log("Payment >", data)
-                //         verifySignature(data, tokken, navigation)
+                RazorpayCheckout.open(options)
+                    .then((data) => {
+                        console.log("Payment >", data)
+                        verifySignature(data, tokken, navigation)
 
-                //         return data
-                //     })
-                //     .catch((error) => {
-                //         console.log("Error in RazorpayCheckout", error, error.response)
-                //     })
+                        return data
+                    })
+                    .catch((error) => {
+                        console.log("Error in RazorpayCheckout", error, error.response)
+                    })
 
             }, 2000);
         }

@@ -17,10 +17,13 @@
       "buildNumber": "12",
       "bundleIdentifier": "com.aits.buykeyz",
       "config": {
-        "usesPushNotifications": true
+        "usesPushNotifications": true,
+        "googleServicesFile": "./GoogleService-Info.plist"
       },
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSUserTrackingUsageDescription": "This identifier will be used to deliver personalized ads to you.",
+        "UIBackgroundModes": ["fetch", "remote-notification"]
       }
     },
     "notification": {

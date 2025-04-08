@@ -125,6 +125,7 @@ const RewardDetails = ({ route }) => {
                                 paddingHorizontal: 10,
                                 marginBottom: 10,
                             }}
+                            placeholderTextColor={"black"}
                         />
                     </View>
                     <View style={{ paddingHorizontal: LEFT_AND_RIGHT_PADDING }}>

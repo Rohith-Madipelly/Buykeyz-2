@@ -22,9 +22,9 @@ import HandleCommonErrors from '../../utils/HandleCommonErrors'
 import Metrics from '../../utils/resposivesUtils/Metrics'
 import LoaderComponents from '../../components/UI/Loadings/LoaderComponents'
 
-// import * as Device from 'expo-device';
-// import * as Notifications from 'expo-notifications';
-// import Constants from 'expo-constants';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 import { fcmTokenAction } from '../../redux/actions/fcmTokenAction'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -39,6 +39,11 @@ const LoginPage = () => {
     const navigation = useNavigation()
     const [expoPushToken, setExpoPushToken] = useState('');
 
+
+    let fcmTokenRedux = useSelector((state) => state?.fcmTokenReducer?.fcmToken||"");
+
+
+    console.log("fcmTokenRedux >>", fcmTokenRedux)
     const onRefresh = () => {
         setTimeout(() => {
             setRefreshing(false)
@@ -50,66 +55,67 @@ const LoginPage = () => {
 
 
 
-    // async function registerForPushNotificationsAsync() {
-    //     let token;
+    async function registerForPushNotificationsAsync() {
+        let token;
 
-    //     if (Device.isDevice) {
-    //         const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    //         let finalStatus = existingStatus;
-    //         if (existingStatus !== 'granted') {
-    //             const { status } = await Notifications.requestPermissionsAsync();
-    //             finalStatus = status;
-    //         }
-    //         if (finalStatus !== 'granted') {
-    //             // alert('Failed to get push token for push notification!');
-    //             return;
-    //         }
-    //         try {
-    //             const projectId =
-    //                 Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
-    //             console.log("project id ", projectId)
-    //             if (!projectId) {
-    //                 throw new Error('Project ID not found');
-    //             }
-    //             // token = (
-    //             //   await Notifications.getExpoPushTokenAsync({
-    //             //     projectId,
-    //             //   })
-    //             // ).data;
+        if (Device.isDevice) {
+            const { status: existingStatus } = await Notifications.getPermissionsAsync();
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const { status } = await Notifications.requestPermissionsAsync();
+                finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+                // alert('Failed to get push token for push notification!');
+                return;
+            }
+            try {
+                const projectId =
+                    Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
+                console.log("project id ", projectId)
+                if (!projectId) {
+                    throw new Error('Project ID not found');
+                }
+                // token = (
+                //   await Notifications.getExpoPushTokenAsync({
+                //     projectId,
+                //   })
+                // ).data;
 
-    //             token = (await Notifications.getDevicePushTokenAsync()).data;
+                token = (await Notifications.getDevicePushTokenAsync()).data;
 
-    //             dispatch(fcmTokenAction(token))
-    //         } catch (e) {
-    //             token = `${e}`;
-    //         }
-    //     } else {
-    //         alert('Must use physical device for Push Notifications');
-    //     }
+                dispatch(fcmTokenAction(token))
+            } catch (e) {
+                token = `${e}`;
+            }
+        } else {
+            alert('Must use physical device for Push Notifications');
+        }
 
-    //     return token;
-    // }
-
-
+        return token;
+    }
 
 
-    // useEffect(() => {
-    //     registerForPushNotificationsAsync()
-    //         .then(token => {
-    //             console.log(token)
-    //             token && setExpoPushToken(token)
-    //             if (token) {
 
-    //                 setFieldValue('fcmToken', token)
-    //             } else {
-    //                 setFieldValue('fcmToken', "null")
-    //             }
-    //             // console.log(">>>",expoPushToken)
-    //         })
-    //         .catch((err) => { console.log(err) })
 
-    //     console.log("Registering  for push notification..")
-    // }, [])
+    useEffect(() => {
+        registerForPushNotificationsAsync()
+            .then(token => {
+                console.log(token)
+                token && setExpoPushToken(token)
+                if (token) {
+
+                    setFieldValue('fcmToken', token)
+                    dispatch(fcmTokenAction(token))
+                } else {
+                    setFieldValue('fcmToken', "null")
+                }
+                // console.log(">>>",expoPushToken)
+            })
+            .catch((err) => { console.log(err) })
+
+        console.log("Registering  for push notification..")
+    }, [])
 
     const {
         handleChange,
@@ -163,6 +169,8 @@ const LoginPage = () => {
                 const message = res.data.message
                 console.log("re", res.data)
 
+                
+
                 if (res.data.kycStatus == "agreement") {
                     toast.show(message)
                     CustomAlerts_OK(message, "But, Please read and agree our agreement", () => {
@@ -171,6 +179,9 @@ const LoginPage = () => {
                         }, 500);
                     })
                 }
+
+
+             
                 // 
                 // else if (res.data.kycStatus == "address") {
                 //     toast.show(message)

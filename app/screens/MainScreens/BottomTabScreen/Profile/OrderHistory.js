@@ -183,7 +183,7 @@ const OrderHistory = () => {
                                                 Delivery Status : </Text>{item.deliveryStatus}
                                             </Text>}
 
-                                            {item?.description != "N.A" && <Text style={[{ fontWeight: 400, fontSize: 14, marginBottom: 5 }]} >
+                                            {item?.description != "N.A"||item?.description != "" && <Text style={[{ fontWeight: 400, fontSize: 14, marginBottom: 5 }]} >
                                                 <Text style={{ fontWeight: 900 }}>
                                                 Description : </Text>{item.description}
                                             </Text>}

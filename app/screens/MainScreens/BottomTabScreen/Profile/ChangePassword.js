@@ -1,4 +1,4 @@
-import { Alert, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,6 +19,7 @@ import { CHANGE_OLD_PASSWORD_API, createPasswordAPI } from '../../../../network/
 import { ChangePasswordYupSchema } from '../../../../formikYupSchemas/Auth/ChangePasswordYupSchema'
 import { TokenLogoutAlert } from '../../../../utils/LogOutHandle'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Metrics from '../../../../utils/resposivesUtils/Metrics'
 const ChangePassword = () => {
     let tokenn = useSelector((state) => state.login.token);
     const [refreshing, setRefreshing] = useState(false)
@@ -140,146 +141,22 @@ const ChangePassword = () => {
                         contentContainerStyle={{ flex: 1, }}
                     >
                         <View style={{ flex: 1, paddingHorizontal: LEFT_AND_RIGHT_PADDING }}>
-                            {/* <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
-                <Image
-                  style={{ width: Metrics.rfv(200), height: Metrics.rfv(80) }}
-                  animation={"bounceIn"}
-                  source={require("../../../../assets/images/appLogo/buykeyzlogo.png")}
-                  contentFit="cover"
-                  transition={1000}
-                  alt=''
-                />
-              </View> */}
-
-
-                            <View>
-                                <Text>Old password</Text>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    borderRadius: 5,
-                                    paddingHorizontal: 10,
-                                    borderWidth: 1,
-                                    borderColor: (errors?.oldPassword && touched?.oldPassword) || (errorFormAPI?.oldPasswordForm) ? "red" : GlobalStyles?.InputBorderColor,
-                                    marginVertical: 5,
-                                }}>
-                                    <TextInput
-                                        value={values?.oldPassword}
-                                        onChangeText={(e) => {
-                                            const noSpaces = e.replace(/\s+/g, '');
-                                            handleChange("oldPassword")(noSpaces);
-                                            seterrorFormAPI();
-                                        }}
-                                        onBlur={handleBlur("oldPassword")}
-                                        secureTextEntry={!show?.oldPassword}
-                                        placeholderTextColor="#B0B0C1"
-                                        placeholder='Old password'
-                                        style={{
-                                            height: 45, flex: 4,
-                                            textAlignVertical: "center",
-                                        }}
-                                    />
-                                    <Pressable onPress={() => setShow(prev => ({ ...prev, oldPassword: !prev.oldPassword }))}>
-                                        {show?.oldPassword ? (
-                                            <Entypo name="eye-with-line" size={20} color="black" />
-                                        ) : (
-                                            <Entypo name="eye" size={20} color="black" />
-                                        )}
-                                    </Pressable>
-                                </View>
-                                {(errors?.oldPassword && touched?.oldPassword) || errorFormAPI?.oldPasswordForm ? (
-                                    <Text style={{ color: "red", marginLeft: 15 }}>
-                                        {errors?.oldPassword || errorFormAPI?.oldPasswordForm}
-                                    </Text>
-                                ) : null}
-                            </View>
-
-                            <View>
-                                <Text>Password</Text>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    borderRadius: 5,
-                                    paddingHorizontal: 10,
-                                    borderWidth: 1,
-                                    borderColor: (errors?.password && touched?.password) || (errorFormAPI?.passwordForm) ? "red" : GlobalStyles?.InputBorderColor,
-                                    marginVertical: 5,
-                                }}>
-                                    <TextInput
-                                        value={values?.password}
-                                        onChangeText={(e) => {
-                                            const noSpaces = e.replace(/\s+/g, '');
-                                            handleChange("password")(noSpaces);
-                                            seterrorFormAPI();
-                                        }}
-                                        onBlur={handleBlur("password")}
-                                        secureTextEntry={!show?.password}
-                                        placeholderTextColor="#B0B0C1"
-                                        placeholder='Password'
-                                        style={{
-                                            height: 45, flex: 4,
-                                            textAlignVertical: "center",
-                                        }}
-                                    />
-                                    <Pressable onPress={() => setShow(prev => ({ ...prev, password: !prev.password }))}>
-                                        {show?.password ? (
-                                            <Entypo name="eye-with-line" size={20} color="black" />
-                                        ) : (
-                                            <Entypo name="eye" size={20} color="black" />
-                                        )}
-                                    </Pressable>
-                                </View>
-                                {(errors?.password && touched?.password) || errorFormAPI?.passwordForm ? (
-                                    <Text style={{ color: "red", marginLeft: 15 }}>
-                                        {errors?.password || errorFormAPI?.passwordForm}
-                                    </Text>
-                                ) : null}
-                            </View>
-
-                            <View>
-                                <Text>Retype password</Text>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    borderRadius: 5,
-                                    paddingHorizontal: 10,
-                                    borderWidth: 1,
-                                    borderColor: (errors?.retypePassword && touched?.retypePassword) || (errorFormAPI?.retypePasswordForm) ? "red" : GlobalStyles?.InputBorderColor,
-                                    marginVertical: 5,
-                                }}>
-                                    <TextInput
-                                        value={values?.retypePassword}
-                                        onChangeText={(e) => {
-                                            const noSpaces = e.replace(/\s+/g, '');
-                                            handleChange("retypePassword")(noSpaces);
-                                            seterrorFormAPI();
-                                        }}
-                                        onBlur={handleBlur("retypePassword")}
-                                        placeholder='retypePassword'
-                                        placeholderTextColor="#B0B0C1"
-                                        secureTextEntry={!show?.retypePassword}
-                                        style={{
-                                            height: 45, flex: 4,
-                                            textAlignVertical: "center",
-                                        }}
-                                    />
-                                    <Pressable onPress={() => setShow(prev => ({ ...prev, retypePassword: !prev.retypePassword }))}>
-                                        {show?.retypePassword ? (
-                                            <Entypo name="eye-with-line" size={20} color="black" />
-                                        ) : (
-                                            <Entypo name="eye" size={20} color="black" />
-                                        )}
-                                    </Pressable>
-                                </View>
-                                {(errors?.retypePassword && touched?.retypePassword) || errorFormAPI?.retypePasswordForm ? (
-                                    <Text style={{ color: "red", marginLeft: 15 }}>
-                                        {errors?.retypePassword || errorFormAPI?.retypePasswordForm}
-                                    </Text>
-                                ) : null}
+                            <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
+                                <Image
+                                    style={{ width: Metrics.rfv(200), height: Metrics.rfv(80) }}
+                                    animation={"bounceIn"}
+                                    source={require("../../../../assets/images/appLogo/buykeyzlogo.png")}
+                                    contentFit="cover"
+                                    transition={1000}
+                                    alt=''
+                                />
                             </View>
 
 
-                            {/* <CustomTextInput
+
+
+
+                            <CustomTextInput
                                 boxWidth={'100%'}
                                 label={'Old password'}
                                 bgColor={'transparent'}
@@ -367,7 +244,7 @@ const ChangePassword = () => {
                                 outlined
                                 borderColor={`${(errors.retypePassword && touched.retypePassword) || (errorFormAPI && errorFormAPI.retypePasswordForm) ? "red" : GlobalStyles.InputBorderColor}`}
                                 errorMessage={`${(errors.retypePassword && touched.retypePassword) ? `${errors.retypePassword}` : (errorFormAPI && errorFormAPI.retypePasswordForm) ? `${errorFormAPI.retypePasswordForm}` : ``}`}
-                            /> */}
+                            />
                             <View style={{ flex: 0.7, justifyContent: 'flex-start', marginHorizontal: LEFT_AND_RIGHT_PADDING }}>
 
                                 <CustomButton

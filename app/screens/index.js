@@ -1,6 +1,6 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
-// import * as Notifications from 'expo-notifications';
+import * as Notifications from 'expo-notifications';
 import { Entypo } from '@expo/vector-icons';
 import { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
@@ -118,36 +118,36 @@ export default function Screen() {
     }, []);
 
 
-    // useEffect(() => {
-    //     // Only proceed with navigation if the navigation is ready
+    useEffect(() => {
+        // Only proceed with navigation if the navigation is ready
 
-    //     const subscription1 = Notifications.addNotificationReceivedListener((notification) => {
-    //         console.log('NOTIFICATION RECEIVED >');
-    //         console.log(notification);
-    //     });
+        const subscription1 = Notifications.addNotificationReceivedListener((notification) => {
+            console.log('NOTIFICATION RECEIVED >');
+            console.log(notification);
+        });
 
-    //     const subscription2 = Notifications.addNotificationResponseReceivedListener((response) => {
-    //         console.log('NOTIFICATION RESPONSE RECEIVED');
-    //         console.log(response.notification);
+        const subscription2 = Notifications.addNotificationResponseReceivedListener((response) => {
+            console.log('NOTIFICATION RESPONSE RECEIVED');
+            console.log(response.notification);
 
-    //         const screenToNavigate = response.notification.request.content.data.screen || "Home";
-    //         console.log("screenToNavigate>", screenToNavigate)
+            const screenToNavigate = response.notification.request.content.data.screen || "Home";
+            console.log("screenToNavigate>", screenToNavigate)
 
-    //         if (navigationRef.isReady()) {
-    //             try {
-    //                 navigationRef.navigate(screenToNavigate || "Home");
-    //             } catch (error) {
-    //                 console.warn("Navigation error:", error);
-    //             }
-    //         }
+            if (navigationRef.isReady()) {
+                try {
+                    navigationRef.navigate(screenToNavigate || "Home");
+                } catch (error) {
+                    console.warn("Navigation error:", error);
+                }
+            }
 
-    //     });
+        });
 
-    //     return () => {
-    //         subscription1.remove();
-    //         subscription2.remove();
-    //     };
-    // }, [isNavigationReady]);
+        return () => {
+            subscription1.remove();
+            subscription2.remove();
+        };
+    }, [isNavigationReady]);
 
 
 

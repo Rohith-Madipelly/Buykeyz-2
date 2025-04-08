@@ -102,6 +102,7 @@ const Stores = () => {
                                 // backgroundColor: 'white',
                             }}
                             placeholder="Search Products"
+                            placeholderTextColor = "#B0B0C1"
                             value={searchQuery}
                             onChangeText={handleSearch}
                         />

@@ -11,7 +11,7 @@ import { FlashList } from '@shopify/flash-list'
 import { PageHandler } from '../AccoountVerificationScreen/ScreenMaintainer/PageHandler'
 
 
-// import RazorpayCheckout from 'react-native-razorpay'
+import RazorpayCheckout from 'react-native-razorpay'
 
 
 const SubscriptionList = ({ route }) => {
@@ -108,41 +108,41 @@ const SubscriptionList = ({ route }) => {
                     setTimeout(() => {
 
 
-                        // RazorpayCheckout.open({
-                        //     key: "rzp_test_CrqnnLqC52V3ki",
-                        //     subscription_id: res.data.subscription.id,
-                        //     name: "Buykeyz",
-                        //     description: "Monthly Subscription Plan",
-                        //     prefill: {
-                        //         email: "customer@example.com",
-                        //         contact: "1234567890",
-                        //     },
-                        //     theme: {
-                        //         color: "#F37254",
-                        //     },
-                        // })
-                        //     .then((data) => {
-                        //         console.log("Payment successful:", data);
-                        //         Alert.alert("Success", `Payment ID: ${data.razorpay_payment_id}`);
+                        RazorpayCheckout.open({
+                            key: "rzp_test_CrqnnLqC52V3ki",
+                            subscription_id: res.data.subscription.id,
+                            name: "Buykeyz",
+                            description: "Monthly Subscription Plan",
+                            prefill: {
+                                email: "customer@example.com",
+                                contact: "1234567890",
+                            },
+                            theme: {
+                                color: "#F37254",
+                            },
+                        })
+                            .then((data) => {
+                                console.log("Payment successful:", data);
+                                Alert.alert("Success", `Payment ID: ${data.razorpay_payment_id}`);
 
-                        //         navigation.navigate("ManageSubscriptions")
+                                navigation.navigate("ManageSubscriptions")
 
-                        //     })
-                        //     .catch((error) => {
-                        //         console.log("Payment failed:", error);
-                        //         // Alert.alert("Payment Failed", error.description || "Something went wrong.");
+                            })
+                            .catch((error) => {
+                                console.log("Payment failed:", error);
+                                // Alert.alert("Payment Failed", error.description || "Something went wrong.");
 
-                        //         const errorData = JSON.parse(error?.description);
+                                const errorData = JSON.parse(error?.description);
 
-                        //         if (errorData?.error?.reason === 'payment_cancelled') {
-                        //             // Payment was canceled by the user
-                        //             alert('You have canceled the payment.');
-                        //         } else {
-                        //             // Handle other errors
-                        //             alert('Payment failed. Please try again.');
-                        //         }
-                        //         // Alert.alert("Payment Failed", error.description || "Something went wrong.");
-                        //     });
+                                if (errorData?.error?.reason === 'payment_cancelled') {
+                                    // Payment was canceled by the user
+                                    alert('You have canceled the payment.');
+                                } else {
+                                    // Handle other errors
+                                    alert('Payment failed. Please try again.');
+                                }
+                                // Alert.alert("Payment Failed", error.description || "Something went wrong.");
+                            });
 
 
                     }, 1000);

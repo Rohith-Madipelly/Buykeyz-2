@@ -11,7 +11,7 @@ import { CustomLinking } from '../../../../utils/CustomLinking';
 import CustomStatusBar from '../../../../components/UI/CustomStatusBar/CustomStatusBar';
 import GlobalStyles from '../../../../components/UI/config/GlobalStyles';
 
-// import Constants from "expo-constants";
+import Constants from "expo-constants";
 import LoaderComponents from '../../../../components/UI/Loadings/LoaderComponents';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -91,7 +91,7 @@ const renderItem1 = ({ item }) => {
 const renderFooter = () => (
   <View style={{ marginBottom: 150 }}>
 
-    {/* <Text style={{ color: '#001F2099', textAlign: 'center' }}>Version {Constants.expoConfig.version}</Text> */}
+    <Text style={{ color: '#001F2099', textAlign: 'center' }}>Version {Constants.expoConfig.version}</Text>
     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }} onPress={() => {
       CustomLinking(SERVICE_PROVIDER_WEBSITE)
     }}>

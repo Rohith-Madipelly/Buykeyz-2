@@ -1,7 +1,7 @@
 import { Alert, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { useToast } from 'react-native-toast-notifications'
-import { useDispatch, } from 'react-redux'
+import { useDispatch, useSelector, } from 'react-redux'
 import GlobalStyles from '../../components/UI/config/GlobalStyles'
 import CustomStatusBar from '../../components/UI/CustomStatusBar/CustomStatusBar'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -23,6 +23,11 @@ const RegisterPage = () => {
     const [errorFormAPI, seterrorFormAPI] = useState("")
     const [spinnerbool, setSpinnerbool] = useState(false)
     const [isChecked, setChecked] = useState(false);
+
+    let fcmTokenRedux = useSelector((state) => state?.fcmTokenReducer?.fcmToken||"");
+
+
+    console.log("fcmTokenRedux >>", fcmTokenRedux)
 
     const toast = useToast()
     const dispatch = useDispatch()
@@ -51,7 +56,7 @@ const RegisterPage = () => {
             email: "",
             phoneNumber: "",
             iAgree: "",
-            // fcmToken: fcmTokenRedux || "" 
+            fcmToken: fcmTokenRedux || "" 
         },
 
         onSubmit: values => {

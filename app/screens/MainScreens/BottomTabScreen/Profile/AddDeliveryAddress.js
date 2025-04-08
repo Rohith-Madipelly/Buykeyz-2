@@ -154,306 +154,54 @@ const AddDeliveryAddress = () => {
                 />
               </View> */}
                             <View style={{ flex: 0.7, justifyContent: 'flex-start', marginHorizontal: LEFT_AND_RIGHT_PADDING }}>
-                                <View>
-                                    <Text>Name<Text style={{ color: 'red' }}>*</Text></Text>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderRadius: 5,
-                                        paddingHorizontal: 10,
-                                        borderWidth: 1,
-                                        borderColor: `${(errors?.name && touched?.name) || (errorFormAPI?.nameForm) ? "red" : GlobalStyles?.InputBorderColor}`,
-                                        marginVertical: 5,
-                                    }}>
-                                        <TextInput
-                                            placeholder="Name"
-                                            value={values?.name}
-                                            onChangeText={(e) => {
-                                                const regex = /^[A-Za-z\s]*$/;
-                                                if (regex.test(e)) {
-                                                    handleChange("name")(e);
-                                                    seterrorFormAPI();
-                                                }
-                                            }}
-                                            onBlur={handleBlur("name")}
-                                            style={{
-                                                height: 45,
-                                                flex: 4,
-                                                textAlignVertical: "center"
-                                            }}
-                                        />
-                                    </View>
-                                    <Text style={{
-                                        color: `${(errors?.name && touched?.name) || (errorFormAPI?.nameForm) ? "red" : GlobalStyles?.InputBorderColor}`,
-                                        marginLeft: 15
-                                    }}>
-                                        {(errors?.name && touched?.name)
-                                            ? errors?.name
-                                            : (errorFormAPI?.nameForm || '')
+                             
+                            <CustomTextInput
+                                    boxWidth={'100%'}
+                                    label={'Name'}
+                                    placeholder={'Name'}
+                                    bgColor={'transparent'}
+                                    asterisksymbol={true}
+                                    value={values.name}
+                                    onChangeText={async (e) => {
+                                        const regex = /^[A-Za-z\s]*$/;
+                                        if (regex.test(e)) {
+                                            handleChange("name")(e); seterrorFormAPI();
                                         }
-                                    </Text>
-                                </View>
+                                    }}
 
+                                    onBlur={handleBlur("name")}
+                                    // validate={handleBlur("fullName")}
+                                    outlined
+                                    borderColor={`${(errors.name && touched.name) || (errorFormAPI && errorFormAPI.nameForm) ? "red" : GlobalStyles.InputBorderColor}`}
+                                    errorMessage={`${(errors.name && touched.name) ? `${errors.name}` : (errorFormAPI && errorFormAPI.nameForm) ? `${errorFormAPI.nameForm}` : ``}`}
+                                />
 
-                                {/* Address Name */}
-                                <View style={{ marginBottom: 10 }}>
-                                    <Text style={{ marginLeft: 5 }}>Address Name<Text style={{ color: 'red' }}> *</Text></Text>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderRadius: 5,
-                                        paddingHorizontal: 10,
-                                        borderWidth: 1,
-                                        borderColor: ((errors?.addressName && touched?.addressName) || (errorFormAPI && errorFormAPI?.addressNameForm)) ? "red" : GlobalStyles?.InputBorderColor,
-                                        marginVertical: 5,
-                                    }}>
-                                        <TextInput
-                                            placeholder="Enter address name"
-                                            value={values?.addressName}
-                                            onChangeText={(e) => {
-                                                handleChange("addressName")(e);
-                                                seterrorFormAPI();
-                                            }}
-                                            onBlur={handleBlur("addressName")}
-                                            style={{ height: 45, flex: 1, textAlignVertical: "center" }}
-                                        />
-                                    </View>
-                                    <Text style={{ color: ((errors?.addressName && touched?.addressName) || (errorFormAPI && errorFormAPI?.addressNameForm)) ? "red" : GlobalStyles?.InputBorderColor, marginLeft: 15 }}>
-                                        {errors?.addressName && touched?.addressName ? errors?.addressName : errorFormAPI?.addressNameForm || ""}
-                                    </Text>
-                                </View>
+                                <CustomTextInput
+                                    boxWidth={'100%'}
+                                    placeholder={'Address Title'}
+                                    label={'Address Title (Optional: e.g., "Home", "Work")'}
+                                    name='addressName'
+                                    value={values.addressName}
+                                    // leftIcon={<Entypo name="lock" size={20} color="black" />}
 
-                                {/* Address */}
-                                <View style={{ marginBottom: 10 }}>
-                                    <Text style={{ marginLeft: 5 }}>Address<Text style={{ color: 'red' }}> *</Text></Text>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderRadius: 5,
-                                        paddingHorizontal: 10,
-                                        borderWidth: 1,
-                                        borderColor: ((errors?.address && touched?.address) || (errorFormAPI && errorFormAPI?.addressForm)) ? "red" : GlobalStyles?.InputBorderColor,
-                                        marginVertical: 5,
-                                    }}>
-                                        <TextInput
-                                            placeholder="Enter address"
-                                            value={values?.address}
-                                            onChangeText={(e) => {
-                                                handleChange("address")(e);
-                                                seterrorFormAPI();
-                                            }}
-                                            onBlur={handleBlur("address")}
-                                            style={{ height: 45, flex: 1, textAlignVertical: "center" }}
-                                        />
-                                    </View>
-                                    <Text style={{ color: ((errors?.address && touched?.address) || (errorFormAPI && errorFormAPI?.addressForm)) ? "red" : GlobalStyles?.InputBorderColor, marginLeft: 15 }}>
-                                        {errors?.address && touched?.address ? errors?.address : errorFormAPI?.addressForm || ""}
-                                    </Text>
-                                </View>
+                                    onChangeText={async (e) => {
+                                        const regex = /^[A-Za-z\s]*$/;
+                                        if (regex.test(e)) {
+                                            handleChange("addressName")(e); seterrorFormAPI();
+                                        }
+                                    }}
+                                    onBlur={handleBlur("addressName")}
+                                    // secure={!show?.address} //default to true
+                                    validate={handleBlur("addressName")}
+                                    borderColor={`${(errors.addressName && touched.addressName) || (errorFormAPI && errorFormAPI.addressNameForm) ? "red" : "#48484A"}`}
+                                    errorMessage={`${(errors.addressName && touched.addressName) ? `${errors.addressName}` : (errorFormAPI && errorFormAPI.addressNameForm) ? `${errorFormAPI.addressNameForm}` : ``}`}
+                                    // errorColor='magenta'
+                                    // numLines={3}
+                                    outlined
+                                // bgColor={'#F6F8FE'}
+                                />
 
-                                {/* City */}
-                                <View style={{ marginBottom: 10 }}>
-                                    <Text style={{ marginLeft: 5 }}>City<Text style={{ color: 'red' }}> *</Text></Text>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderRadius: 5,
-                                        paddingHorizontal: 10,
-                                        borderWidth: 1,
-                                        borderColor: ((errors?.city && touched?.city) || (errorFormAPI && errorFormAPI?.cityForm)) ? "red" : GlobalStyles?.InputBorderColor,
-                                        marginVertical: 5,
-                                    }}>
-                                        <TextInput
-                                            placeholder="Enter city"
-                                            value={values?.city}
-                                            onChangeText={(e) => {
-                                                handleChange("city")(e);
-                                                seterrorFormAPI();
-                                            }}
-                                            onBlur={handleBlur("city")}
-                                            style={{ height: 45, flex: 1, textAlignVertical: "center" }}
-                                        />
-                                    </View>
-                                    <Text style={{ color: ((errors?.city && touched?.city) || (errorFormAPI && errorFormAPI?.cityForm)) ? "red" : GlobalStyles?.InputBorderColor, marginLeft: 15 }}>
-                                        {errors?.city && touched?.city ? errors?.city : errorFormAPI?.cityForm || ""}
-                                    </Text>
-                                </View>
-
-                                {/* Area */}
-                                <View style={{ marginBottom: 10 }}>
-                                    <Text style={{ marginLeft: 5 }}>Area<Text style={{ color: 'red' }}> *</Text></Text>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderRadius: 5,
-                                        paddingHorizontal: 10,
-                                        borderWidth: 1,
-                                        borderColor: ((errors?.area && touched?.area) || (errorFormAPI && errorFormAPI?.areaForm)) ? "red" : GlobalStyles?.InputBorderColor,
-                                        marginVertical: 5,
-                                    }}>
-                                        <TextInput
-                                            placeholder="Enter area"
-                                            value={values?.area}
-                                            onChangeText={(e) => {
-                                                handleChange("area")(e);
-                                                seterrorFormAPI();
-                                            }}
-                                            onBlur={handleBlur("area")}
-                                            style={{ height: 45, flex: 1, textAlignVertical: "center" }}
-                                        />
-                                    </View>
-                                    <Text style={{ color: ((errors?.area && touched?.area) || (errorFormAPI && errorFormAPI?.areaForm)) ? "red" : GlobalStyles?.InputBorderColor, marginLeft: 15 }}>
-                                        {errors?.area && touched?.area ? errors?.area : errorFormAPI?.areaForm || ""}
-                                    </Text>
-                                </View>
-
-                                {/* Pincode */}
-                                <View style={{ marginBottom: 10 }}>
-                                    <Text style={{ marginLeft: 5 }}>Pincode<Text style={{ color: 'red' }}> *</Text></Text>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderRadius: 5,
-                                        paddingHorizontal: 10,
-                                        borderWidth: 1,
-                                        borderColor: ((errors?.pincode && touched?.pincode) || (errorFormAPI && errorFormAPI?.pincodeForm)) ? "red" : GlobalStyles?.InputBorderColor,
-                                        marginVertical: 5,
-                                    }}>
-                                        <TextInput
-                                            placeholder="Enter pincode"
-                                            value={values?.pincode}
-                                            onChangeText={(e) => {
-                                                const pin = e.replace(/[^0-9]/g, '').slice(0, 6);
-                                                handleChange("pincode")(pin);
-                                                seterrorFormAPI();
-                                            }}
-                                            onBlur={handleBlur("pincode")}
-                                            keyboardType="numeric"
-                                            maxLength={6}
-                                            style={{ height: 45, flex: 1, textAlignVertical: "center" }}
-                                        />
-                                    </View>
-                                    <Text style={{ color: ((errors?.pincode && touched?.pincode) || (errorFormAPI && errorFormAPI?.pincodeForm)) ? "red" : GlobalStyles?.InputBorderColor, marginLeft: 15 }}>
-                                        {errors?.pincode && touched?.pincode ? errors?.pincode : errorFormAPI?.pincodeForm || ""}
-                                    </Text>
-                                </View>
-
-                                {/* State */}
-                                <View style={{ marginBottom: 10 }}>
-                                    <Text style={{ marginLeft: 5 }}>State<Text style={{ color: 'red' }}> *</Text></Text>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderRadius: 5,
-                                        paddingHorizontal: 10,
-                                        borderWidth: 1,
-                                        borderColor: ((errors?.state && touched?.state) || (errorFormAPI && errorFormAPI?.stateForm)) ? "red" : GlobalStyles?.InputBorderColor,
-                                        marginVertical: 5,
-                                    }}>
-                                        <TextInput
-                                            placeholder="Enter state"
-                                            value={values?.state}
-                                            onChangeText={(e) => {
-                                                handleChange("state")(e);
-                                                seterrorFormAPI();
-                                            }}
-                                            onBlur={handleBlur("state")}
-                                            style={{ height: 45, flex: 1, textAlignVertical: "center" }}
-                                        />
-                                    </View>
-                                    <Text style={{ color: ((errors?.state && touched?.state) || (errorFormAPI && errorFormAPI?.stateForm)) ? "red" : GlobalStyles?.InputBorderColor, marginLeft: 15 }}>
-                                        {errors?.state && touched?.state ? errors?.state : errorFormAPI?.stateForm || ""}
-                                    </Text>
-                                </View>
-
-                                {/* District */}
-                                <View style={{ marginBottom: 10 }}>
-                                    <Text style={{ marginLeft: 5 }}>District<Text style={{ color: 'red' }}> *</Text></Text>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderRadius: 5,
-                                        paddingHorizontal: 10,
-                                        borderWidth: 1,
-                                        borderColor: ((errors?.district && touched?.district) || (errorFormAPI && errorFormAPI?.districtForm)) ? "red" : GlobalStyles?.InputBorderColor,
-                                        marginVertical: 5,
-                                    }}>
-                                        <TextInput
-                                            placeholder="Enter district"
-                                            value={values?.district}
-                                            onChangeText={(e) => {
-                                                handleChange("district")(e);
-                                                seterrorFormAPI();
-                                            }}
-                                            onBlur={handleBlur("district")}
-                                            style={{ height: 45, flex: 1, textAlignVertical: "center" }}
-                                        />
-                                    </View>
-                                    <Text style={{ color: ((errors?.district && touched?.district) || (errorFormAPI && errorFormAPI?.districtForm)) ? "red" : GlobalStyles?.InputBorderColor, marginLeft: 15 }}>
-                                        {errors?.district && touched?.district ? errors?.district : errorFormAPI?.districtForm || ""}
-                                    </Text>
-                                </View>
-
-                                <View>
-                                    <Text>Phone Number <Text style={{ color: 'red' }}>*</Text></Text>
-                                    <View style={{
-                                        borderWidth: 1,
-                                        borderColor: ((errors.phoneNumber && touched.phoneNumber) || (errorFormAPI && errorFormAPI.phoneNumberForm)) ? "red" : GlobalStyles?.InputBorderColor,
-                                        borderRadius: 5,
-                                        paddingHorizontal: 10,
-                                        marginVertical: 5
-                                    }}>
-                                        <TextInput
-                                            placeholder="Enter Phone Number"
-                                            value={values.phoneNumber}
-                                            keyboardType="numeric"
-                                            maxLength={10}
-                                            onChangeText={(e) => {
-                                                const onlyNumbers = e.replace(/[^0-9]/g, '').slice(0, 10);
-                                                handleChange("phoneNumber")(onlyNumbers);
-                                                seterrorFormAPI();
-                                            }}
-                                            onBlur={handleBlur("phoneNumber")}
-                                            style={{ height: 45 }}
-                                        />
-                                    </View>
-                                    <Text style={{ color: ((errors.phoneNumber && touched.phoneNumber) || (errorFormAPI && errorFormAPI.phoneNumberForm)) ? "red" : GlobalStyles?.InputBorderColor, marginLeft: 15 }}>
-                                        {(errors.phoneNumber && touched.phoneNumber) ? errors.phoneNumber : errorFormAPI?.phoneNumberForm || ""}
-                                    </Text>
-                                </View>
-                                {/* Alternate Phone Number */}
-                                <View style={{ marginBottom: 10 }}>
-                                    <Text style={{ marginLeft: 5 }}>Alternate Phone Number</Text>
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderRadius: 5,
-                                        paddingHorizontal: 10,
-                                        borderWidth: 1,
-                                        borderColor: ((errors?.alternatePhoneNumber && touched?.alternatePhoneNumber) || (errorFormAPI && errorFormAPI?.alternatePhoneNumberForm)) ? "red" : GlobalStyles?.InputBorderColor,
-                                        marginVertical: 5,
-                                    }}>
-                                        <TextInput
-                                            placeholder="Enter alternate phone number"
-                                            value={values?.alternatePhoneNumber}
-                                            onChangeText={(e) => {
-                                                const phone = e.replace(/[^0-9]/g, '').slice(0, 10);
-                                                handleChange("alternatePhoneNumber")(phone);
-                                                seterrorFormAPI();
-                                            }}
-                                            onBlur={handleBlur("alternatePhoneNumber")}
-                                            keyboardType="numeric"
-                                            maxLength={10}
-                                            style={{ height: 45, flex: 1, textAlignVertical: "center" }}
-                                        />
-                                    </View>
-                                    <Text style={{ color: ((errors?.alternatePhoneNumber && touched?.alternatePhoneNumber) || (errorFormAPI && errorFormAPI?.alternatePhoneNumberForm)) ? "red" : GlobalStyles?.InputBorderColor, marginLeft: 15 }}>
-                                        {errors?.alternatePhoneNumber && touched?.alternatePhoneNumber ? errors?.alternatePhoneNumber : errorFormAPI?.alternatePhoneNumberForm || ""}
-                                    </Text>
-                                </View>
-
-
-                                {/* <CustomTextInput
+                                <CustomTextInput
                                     boxWidth={'100%'}
                                     placeholder={'Enter address'}
                                     label={'Address  (Street address, building name, etc.)'}
@@ -572,13 +320,10 @@ const AddDeliveryAddress = () => {
                                     // bgColor={'#F7F7F7'}
                                     borderColor={`${(errors.district && touched.district) || (errorFormAPI && errorFormAPI.districtForm) ? "red" : "#48484A"}`}
                                     errorMessage={`${(errors.district && touched.district) ? `${errors.district}` : (errorFormAPI && errorFormAPI.districtForm) ? `${errorFormAPI.districtForm}` : ``}`}
-                                /> */}
+                                />
 
 
-
-
-
-                                {/* <CustomTextInput
+                                <CustomTextInput
                                     boxWidth={'100%'}
                                     placeholder={'Enter Phone Number'}
                                     label={'Phone Number'}
@@ -598,8 +343,8 @@ const AddDeliveryAddress = () => {
                                     keyboardType="numeric"
                                     borderColor={`${(errors.phoneNumber && touched.phoneNumber) || (errorFormAPI && errorFormAPI.phoneNumberForm) ? "red" : "#48484A"}`}
                                     errorMessage={`${(errors.phoneNumber && touched.phoneNumber) ? `${errors.phoneNumber}` : (errorFormAPI && errorFormAPI.phoneNumberForm) ? `${errorFormAPI.phoneNumberForm}` : ``}`}
-                                /> */}
-                                {/* <CustomTextInput
+                                />
+                                <CustomTextInput
                                     boxWidth={'100%'}
                                     placeholder={'Enter Alternate Phone Number'}
                                     label={'Alternate Phone Number (Optional: for backup contact)  '}
@@ -650,7 +395,9 @@ const AddDeliveryAddress = () => {
                                     outlined
                                     borderColor={`${(errors.phoneNumber && touched.phoneNumber) || (errorFormAPI && errorFormAPI.phoneNumberForm) ? "red" : GlobalStyles.InputBorderColor}`}
                                     errorMessage={`${(errors.phoneNumber && touched.phoneNumber) ? `${errors.phoneNumber}` : (errorFormAPI && errorFormAPI.phoneNumberForm) ? `${errorFormAPI.phoneNumberForm}` : ``}`}
-                                /> */}
+                                />
+
+                      
 
                                
 

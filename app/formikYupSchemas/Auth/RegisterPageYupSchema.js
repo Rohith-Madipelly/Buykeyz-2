@@ -11,7 +11,7 @@ const RegisterPageYupSchema = Yup.object().shape({
   email:Yup.string(),
   phoneNumber:Yup.string(),
   iAgree:Yup.string(),
-  fcmToken:Yup.string()
+  fcmToken:Yup.mixed()
   // fullName: NameValidations.required('First Name is required'),
   // email: EmailValidations,
   // phoneNumber: Yup.string()
