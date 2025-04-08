@@ -1,0 +1,27 @@
+{
+  "cli": {
+    "version": ">= 16.2.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "development.analogue@gmail.com",
+        "ascAppId": "6743200550",
+        "appleTeamId": "67XH487NTB"
+      }
+    }
+  }
+}

@@ -1,0 +1,138 @@
+import { FlatList, Platform, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useState } from 'react'
+import { useToast } from 'react-native-toast-notifications'
+import { useDispatch, useSelector } from 'react-redux'
+import GlobalStyles from '../../../../components/UI/config/GlobalStyles'
+import CustomStatusBar from '../../../../components/UI/CustomStatusBar/CustomStatusBar'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import TextStyles from '../../../../components/UI/config/TextStyles'
+import { LEFT_AND_RIGHT_PADDING } from '../../../../components/UI/config/AppContants'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import CustomButton from '../../../../components/UI/Buttons/CustomButton'
+import { LogOutHandle } from '../../../../utils/LogOutHandle'
+import AppLogo from '../../../../assets/svg/Logo/AppLogo'
+import { Image, ImageBackground } from 'expo-image'
+import { Get_Notification_API } from '../../../../network/ApiCalls'
+import CustomImageCarousel from '../../../../components/UI/Carousels/CustomImageCarousel'
+import Metrics from '../../../../utils/resposivesUtils/Metrics'
+import NextIcon from '../../../../assets/svg/NextIcon'
+import LoadingImage from '../../../../components/UI/ImageConatiners/LoadingImage'
+import CustomToolKitHeader from '../../../../components/UI/CustomToolKitHeader'
+
+const NotificationList = ({ route }) => {
+    const { params } = route;
+
+    let tokenn = useSelector((state) => state.login.token);
+
+    const [refreshing, setRefreshing] = useState(false)
+    const [show, setShow] = useState()
+    const [errorFormAPI, seterrorFormAPI] = useState("")
+    const [spinnerbool, setSpinnerbool] = useState(false)
+    const toast = useToast()
+    const dispatch = useDispatch()
+    const navigation = useNavigation()
+    const insets = useSafeAreaInsets();
+    const [notificationList, setNotificationList] = useState(false)
+
+
+
+    const buttonHandler = () => {
+        LogOutHandle(dispatch)
+    }
+
+
+
+
+
+
+    const ApiCaller = async () => {
+        try {
+            const res = await Get_Notification_API(tokenn)
+            if (res) {
+                console.log("", res.data)
+                setNotificationList(res.data)
+            }
+
+        } catch (error) {
+            console.log(error)
+
+            if (error.response) {
+                if (error.response.status === 400) {
+                    Alert.alert(error.response.data.message)
+                    //   console.log(error.response.data.message)
+                }
+            }
+
+        }
+        finally {
+
+            setTimeout(() => {
+                setSpinnerbool(false)
+            }, 50);
+
+            setTimeout(() => {
+                setRefreshing(false);
+            }, 50)
+        }
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            ApiCaller()
+        }, [])
+    )
+
+    const renderItem1 = ({ item }) => {
+        return (
+            <View style={{ marginVertical: 10 }}>
+
+
+                <TouchableOpacity style={{ flex: 1, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'space-around' }} onPress={() => { console.log("Hello Notification Id", item.routeTo) }}>
+
+                    <View style={{ flex: 1 }}>
+                        <Text>{item.title}</Text>
+                        <Text style={{ color: '#B0B0C1' }}>{item.title}</Text>
+                    </View>
+
+                    <View style={{ flex: 0.1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Image style={{ width: 24, height: 24 }}
+                            source={require("../../../../assets/images/Profile/chevron_right.png")}
+                           />
+                    </View>
+                </TouchableOpacity>
+                <View style={{ borderBottomColor: '#B0B0C1', borderBottomWidth: 1, marginHorizontal: 15, marginTop: 10 }}></View>
+            </View>
+        )
+    }
+
+    return (
+        <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
+            <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
+            <View style={{ flex: 1, marginTop: insets.top, marginBottom: insets.bottom }}>
+                <CustomToolKitHeader componentName={"Notifications"} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} />
+
+                {/* <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                >
+                    <View>
+
+                    </View>
+                </ScrollView> */}
+
+
+                <FlatList
+                    data={notificationList || []}
+                    // keyExtractor={(item, index) => index.toString()}
+                    renderItem={renderItem1}
+                />
+            </View>
+        </View>
+    )
+}
+
+export default NotificationList
+
+const styles = StyleSheet.create({})
