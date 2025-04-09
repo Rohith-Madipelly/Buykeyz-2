@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "446929576758",
+    "project_id": "buykeyz",
+    "storage_bucket": "buykeyz.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446929576758:android:ccffbe828994ffc2234997",
+        "android_client_info": {
+          "package_name": "com.aits.buykeyz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJtfWF17B9wkhKY8MrnSwI8XSkhj2-XNs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
