@@ -1,4 +1,4 @@
-import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,13 +9,14 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import HandleCommonErrors from '../../../../utils/HandleCommonErrors'
 import LoaderComponents from '../../../../components/UI/Loadings/LoaderComponents'
 import CustomToolKitHeader from '../../../../components/UI/CustomToolKitHeader'
-import { ALL_ORDERS_API, ALL_ORDERS_TRANSACTIONS_API } from '../../../../network/ApiCalls'
+import { ALL_ORDERS_API, ALL_ORDERS_TRANSACTIONS_API, GET_IN_VOICE_API } from '../../../../network/ApiCalls'
 
 import { FlashList } from '@shopify/flash-list'
 import Metrics from '../../../../utils/resposivesUtils/Metrics'
 import LoadingImage from '../../../../components/UI/ImageConatiners/LoadingImage'
 import TextStyles from '../../../../components/UI/config/TextStyles'
 import moment from 'moment'
+import { Feather } from '@expo/vector-icons'
 const OrderHistory = () => {
     let tokenn = useSelector((state) => state.login.token);
     const [refreshing, setRefreshing] = useState(false)
@@ -76,7 +77,21 @@ const OrderHistory = () => {
     )
 
 
+    const GetInVoiceApicaller = async (orderId) => {
+        console.log("dhvcsj")
+        try {
+            const res=await GET_IN_VOICE_API(orderId,tokenn)
+            if(res){
+                toast.hideAll()
+                console.log(res.data.message)
+                toast.show(res.data.message)
+            }
 
+        } catch (error) {
+            console.log("",error)
+        }
+
+    }
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
             <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
@@ -105,12 +120,39 @@ const OrderHistory = () => {
                                 />
                             }
                             renderItem={({ item, index }) => (
-                                <View style={[{ backgroundColor: 'white', width: '99%', margin: 3, borderRadius: 10, marginVertical: 5, paddingBottom: 10 }, GlobalStyles.productBoxdropDownShadow2]}>
+                                <View style={[{ backgroundColor: 'white', width: '99%', margin: 3, borderRadius: 10, marginVertical: 5, paddingBottom: 10, paddingTop: 30 }, GlobalStyles.productBoxdropDownShadow2]}>
+
+                                    <View style={{ justifyContent: 'center', alignItems: 'flex-end', paddingRight: 20, position: 'absolute', right: -7, top: 10 }}>
+
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                
+                                                Alert.alert(
+                                                    "Get Invoice?", // Title of the alert
+                                                    "Do you want to get the invoice? Click OK to send.",// Message
+                                                    [
+                                                      {
+                                                        text: "OK", // Button text
+                                                        onPress: () => GetInVoiceApicaller(item._id), // Call getInvoice when "OK" is pressed
+                                                      },
+                                                      {
+                                                        text: "Cancel", // Button text for cancel
+                                                        style: "cancel", // Style for cancel button
+                                                      },
+                                                    ],
+                                                    { cancelable: true } // Make it cancelable when clicking outside
+                                                  );
+                                            }}
+                                            style={{ backgroundColor: '#A4A4A4', padding: 3, width: 30, height: 30, borderRadius: 30, justifyContent: 'center', alignItems: 'center' }}>
+                                            <Feather name="download" size={20} color="black" />
+                                        </TouchableOpacity>
+                                    </View>
                                     <View style={{ margin: 3 }}>
 
                                         {/* <View style={{ position: 'absolute', left: 0, top: 0, zIndex: 10, backgroundColor: item.status == "Paid" ? "#008000" : '#cd1c18', padding: 5, borderRadius: 5, paddingHorizontal: 10, minWidth: 100 }}>
                                         <Text style={{ color: item.status == "Paid" ? "07005B" : '', textAlign: 'center' }}>Payment : {item.status}</Text>
                                     </View> */}
+
 
                                         <View style={{ width: '100%', flexDirection: 'row', }}>
                                             {/* {console.log("dvjhb",item)} */}
@@ -156,16 +198,19 @@ const OrderHistory = () => {
 
 
                                                 </View>
+
                                             </View>
+
                                         </View>
                                         <View style={{ padding: 10 }}>
 
-                                            <Text style={[{ fontWeight: 800 }]}>
+
+
+                                            {item.createdAt && <Text style={[{ fontWeight: 800, marginVertical: Metrics.rfv(5) }]}>
                                                 Order placed date : <Text style={{ fontWeight: 600 }}>
-                                                    {moment(item.createdAt).format('DD-MM-YYYY')}</Text>
-                                            </Text>
-
-
+                                                    {moment(item.createdAt).format('DD-MM-YYYY')}
+                                                </Text>
+                                            </Text>}
                                             {item.estimatedDelivery && <Text style={[{ fontWeight: 800, marginVertical: Metrics.rfv(5) }]}>
                                                 Estimated Delivery date : <Text style={{ fontWeight: 600 }}>
                                                     {item.estimatedDelivery}
@@ -177,30 +222,36 @@ const OrderHistory = () => {
                                                     Delivery Address : </Text>{item.address} {item.landMark} {item.pincode}
                                             </Text>
 
-
-                                            {item?.deliveryStatus != "N.A" && <Text style={[{ fontWeight: 400, fontSize: 14, marginBottom: 5 }]} >
+                                            <Text style={[{ fontWeight: 400, fontSize: 14, marginBottom: 5 }]} >
                                                 <Text style={{ fontWeight: 900 }}>
-                                                Delivery Status : </Text>{item.deliveryStatus}
+                                                    Order status : </Text>{item.status}
+                                            </Text>
+
+                                            {/* {item?.deliveryStatus != "N.A" && <Text style={[{ fontWeight: 400, fontSize: 14, marginBottom: 5 }]} >
+                                                <Text style={{ fontWeight: 900 }}>
+                                                    Delivery Status : </Text>{item.deliveryStatus}
+                                            </Text>} */}
+
+                                            {item?.description != "N.A" && <Text style={[{ fontWeight: 400, fontSize: 14, marginBottom: 5 }]} >
+                                                <Text style={{ fontWeight: 900 }}>
+                                                    Delivery Description : </Text>
+                                                {item.description}
                                             </Text>}
 
-                                            {item?.description != "N.A"||item?.description != "" && <Text style={[{ fontWeight: 400, fontSize: 14, marginBottom: 5 }]} >
-                                                <Text style={{ fontWeight: 900 }}>
-                                                Description : </Text>{item.description}
-                                            </Text>}
 
-    
-                                            <View style={{ borderRadius: 10, backgroundColor: '#07005B', justifyContent: 'center', paddingVertical: 10 }}>
+                                            {item?.deliveryStatus != "N.A" ? <View style={{ borderRadius: 10, backgroundColor: '#07005B', justifyContent: 'center', paddingVertical: 10 }}>
                                                 {item.status && <Text style={[{
                                                     fontWeight: 800,
                                                     color: 'white',
                                                     //  marginTop: Metrics.rfv(5),
                                                     textAlign: 'center'
                                                 }]}>
-                                                    Order status : <Text style={{ fontWeight: 600 }}>
-                                                        {item.status}
+                                                    Delivery Status : <Text style={{ fontWeight: 600 }}>
+                                                        {item.deliveryStatus}
                                                     </Text>
                                                 </Text>}
-                                            </View>
+                                            </View> : ""}
+
 
                                             {/* <Text>{item.deliveryStatus}</Text> */}
 

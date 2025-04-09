@@ -4,7 +4,7 @@ class AsyncStorage_Calls {
   async setAsyncValue(key, value, callBack) {
     try {
       await AsyncStorage.setItem('Buykeyz$:' + key, JSON.stringify(value));
-      console.log("setAsyncValue");
+      console.log("setAsyncValue to ", `'Buykeyz$:' + ${key}`);
       callBack(null, true);
     } catch (error) {
       console.error("Error setting async value:", error);
@@ -31,25 +31,20 @@ class AsyncStorage_Calls {
   async removeAsyncValue(key, callBack) {
     try {
       await AsyncStorage.removeItem('Buykeyz$:' + key);
-      callBack(null, true);
+      callBack('', true);
     } catch (error) {
-      console.error("Error removing async value:", error);
-      callBack('Error removing token', false);
+      console.error("Error removing async value c", error);
+      callBack(' >>> ... Error removing token', false);
     }
-  }
-
-  // Optional alias for setting token
-  async setTokenJWT(token, callBack) {
-    this.setAsyncValue("Token", token, callBack);
-  }
-
-  async getTokenJWT(callBack) {
-    this.getAsyncValue("Token", callBack);
-  }
-
-  async removeTokenJWT(callBack) {
-    this.removeAsyncValue("Token", callBack);
   }
 }
 
 export default new AsyncStorage_Calls();
+
+
+// AsyncStorage_Calls.setAsyncValue("Token", JSON.stringify(res.data.token), function (res, status) {
+//                       if (status) {
+//                           toast.show(message)
+//                           dispatch(setToken(token));
+//                       }
+//                   })

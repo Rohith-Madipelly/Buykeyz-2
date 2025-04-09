@@ -78,8 +78,6 @@ export default function Screen() {
         'Poppins-SemiBold': require('../assets/fonts/Poppins-SemiBold.ttf'),
         'DMSans-Regular': require('../assets/fonts/DMSans-Regular.ttf'),
         'DMSans-SemiBold': require('../assets/fonts/DMSans-SemiBold.ttf'),
-
-
     });
 
     useEffect(() => {
@@ -92,6 +90,7 @@ export default function Screen() {
             if (error) {
                 console.error('Error getting token:', error);
             } else {
+                console.log("Is a user or not", token)
                 if (token != null) {
                     dispatch(setToken(token));
                 }
@@ -192,7 +191,7 @@ export default function Screen() {
 
                             <Stack.Screen name="OrderTransactions" component={OrderTransactions} options={{ headerShown: false }} />
                             <Stack.Screen name="OrderHistory" component={OrderHistory} options={{ headerShown: false }} />
-                            
+
                             <Stack.Screen name="RewardDetails" component={RewardDetails} options={{ headerShown: false }} />
                             <Stack.Screen name="RewardWinner" component={RewardWinner} options={{ headerShown: false }} />
                             <Stack.Screen name="NotificationList" component={NotificationList} options={{ headerShown: false }} />

@@ -24,7 +24,7 @@ const RegisterPage = () => {
     const [spinnerbool, setSpinnerbool] = useState(false)
     const [isChecked, setChecked] = useState(false);
 
-    let fcmTokenRedux = useSelector((state) => state?.fcmTokenReducer?.fcmToken||"");
+    let fcmTokenRedux = useSelector((state) => state?.fcmTokenReducer?.fcmToken || "");
 
 
     console.log("fcmTokenRedux >>", fcmTokenRedux)
@@ -56,7 +56,7 @@ const RegisterPage = () => {
             email: "",
             phoneNumber: "",
             iAgree: "",
-            fcmToken: fcmTokenRedux || "" 
+            fcmToken: fcmTokenRedux || ""
         },
 
         onSubmit: values => {
@@ -82,6 +82,7 @@ const RegisterPage = () => {
             try {
                 const res = await UserRegisterOTPApi(values);
                 if (res.data) {
+                    console.log("res.d",res.data)
                     if (res.status === 200) {
                         console.log("res.data", res.data)
                         toast.show(res.data.message)
@@ -155,9 +156,9 @@ const RegisterPage = () => {
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                 >
-      <KeyboardAwareScrollView behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-                           contentContainerStyle={{ flex:1, }}
-                       >
+                    <KeyboardAwareScrollView behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                        contentContainerStyle={{ flex: 1, }}
+                    >
                         <View style={{ flex: 1, }}>
 
                             <View style={{ flex: 0.7, justifyContent: 'center', marginHorizontal: LEFT_AND_RIGHT_PADDING }}>
@@ -183,7 +184,7 @@ const RegisterPage = () => {
                                     errorMessage={`${(errors?.fullName && touched?.fullName) ? `${errors?.fullName}` : (errorFormAPI && errorFormAPI?.fullNameForm) ? `${errorFormAPI?.fullNameForm}` : ``}`}
                                 />
 
-                                
+
 
 
                                 <CustomTextInput
@@ -209,7 +210,7 @@ const RegisterPage = () => {
 
                                 <CustomTextInput
                                     boxWidth={'100%'}
-                                    label={'Email Phone Number'}
+                                    label={'Phone Number'}
                                     placeholder={'Enter phoneNumber'}
                                     bgColor={'transparent'}
                                     asterisksymbol={true}

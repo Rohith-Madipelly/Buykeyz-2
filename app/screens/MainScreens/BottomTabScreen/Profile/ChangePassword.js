@@ -252,7 +252,7 @@ const ChangePassword = () => {
                                     bgColor={`${isValid ? PRIMARY_COLOR : PRIMARY_LIGHT_COLOR}`}
                                     onPress={() => { handleSubmit() }}
                                     style={{ marginTop: 50 }}>
-                                    Add Address
+                                    Update Password
                                 </CustomButton>
                                 <View style={{ height: 400 }}>
 

@@ -2,7 +2,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 
-// import RazorpayCheckout from 'react-native-razorpay';
+import RazorpayCheckout from 'react-native-razorpay';
 
 
 const PayMoney = async (amount) => {
@@ -56,14 +56,14 @@ const PayMoney = async (amount) => {
                 },
             }
 
-            // RazorpayCheckout.open(options)
-            //     .then((data) => {
-            //         console.log("Payment >", data)
-            //         verifySignature(data)
-            //     })
-            //     .catch((error) => {
-            //         console.log("Error in RazorpayCheckout", error,error.response)
-            //     })
+            RazorpayCheckout.open(options)
+                .then((data) => {
+                    console.log("Payment >", data)
+                    verifySignature(data)
+                })
+                .catch((error) => {
+                    console.log("Error in RazorpayCheckout", error,error.response)
+                })
         }
 
     } catch (error) {

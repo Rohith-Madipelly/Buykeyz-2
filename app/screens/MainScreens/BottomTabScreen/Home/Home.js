@@ -1,4 +1,4 @@
-import {Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,7 +9,7 @@ import TextStyles from '../../../../components/UI/config/TextStyles'
 import { LEFT_AND_RIGHT_PADDING } from '../../../../components/UI/config/AppContants'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import CustomButton from '../../../../components/UI/Buttons/CustomButton'
-import { LogOutHandle } from '../../../../utils/LogOutHandle'
+import { LogOutHandle, MainLogoutSystem, ServerTokenError_Logout } from '../../../../utils/LogOutHandle'
 import AppLogo from '../../../../assets/svg/Logo/AppLogo'
 import { Image, ImageBackground } from 'expo-image'
 import { HomeAPI } from '../../../../network/ApiCalls'
@@ -42,20 +42,23 @@ const Home = ({ route }) => {
 
 
 
-
-
     const ApiCaller = async () => {
+
+        console.log("tokenn", tokenn)
         try {
             const res = await HomeAPI(tokenn)
-            if (res) {
-                console.log("", res.data)
+            if (res.data) {
+                setAPIData()
                 setAPIData(res.data)
             }
 
         } catch (error) {
             console.log("error console", error.response.status)
+            console.log("error console", error.response.data.message)
             if (error.response.status === 400) {
                 seterrorFormAPI({ passwordForm: `${error.response.data.message}` })
+            } else if (error.response.status === 401) {
+                ServerTokenError_Logout(undefined,undefined, dispatch)
             }
             else {
                 HandleCommonErrors(error)
@@ -89,9 +92,10 @@ const Home = ({ route }) => {
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
             <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
-            <View style={{ flex: 1, marginTop: insets.top,
+            <View style={{
+                flex: 1, marginTop: insets.top,
                 //  marginBottom: insets.bottom
-                  }}>
+            }}>
                 <ScrollView
                     keyboardShouldPersistTaps="handled"
                     contentContainerStyle={{ flexGrow: 1 }}
@@ -108,7 +112,10 @@ const Home = ({ route }) => {
                                 <AppLogo />
                             </View>
 
-                            <Pressable onPress={() => { navigation.navigate('NotificationList') }} style={{ justifyContent: 'center' }}>
+                            <Pressable onPress={() => {
+                                // MainLogoutSystem(dispatch)
+                                navigation.navigate('NotificationList') 
+                            }} style={{ justifyContent: 'center' }}>
                                 <Image
                                     style={{ width: 25, height: 25, marginBottom: 10, marginRight: 10, marginTop: 10 }}
                                     // animation={"bounceIn"}

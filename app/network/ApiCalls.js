@@ -13,6 +13,7 @@ export const Bank_Details_on_IFSC = async (IFSC_CODE) => {
 
 // Login API DONE
 export const UserLoginApi = async (loginFormReq) => {
+  console.log("jdbjh",loginFormReq)
   return await axios.post(`${GUEST_URL}/login`, loginFormReq)
 }
 
@@ -24,6 +25,7 @@ export const UserRegisterOTPApi = async (registerFormReq) => {
 
 // RESEND OTP
 export const resendRegisterOpt = async (token) => {
+
   return await axios.get(`${GUEST_URL}/resend`, {
     headers: {
       'Authorization': `Bearer ${token}`
@@ -274,6 +276,14 @@ export const ALL_ORDERS_API = async (token) => {
   })
 }
 
+export const GET_IN_VOICE_API = async (orderId,token) => {
+  return await axios.get(`${GUEST_URL}/invoicedownload/${orderId}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+}
+
 // Change Password
 export const CHANGE_OLD_PASSWORD_API = async (data, token, profileImage) => {
   const formData = new FormData();
@@ -295,7 +305,7 @@ export const CHANGE_OLD_PASSWORD_API = async (data, token, profileImage) => {
 export const UpdateProfilePic = async (profileImage, token,) => {
 
 
-  console.log("sdjbkjsbc",profileImage)
+  console.log("sdjbkjsbc", profileImage)
 
   const formData = new FormData();
 

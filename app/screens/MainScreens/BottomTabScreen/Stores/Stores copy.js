@@ -17,7 +17,7 @@ import LoadingImage from '../../../../components/UI/ImageConatiners/LoadingImage
 import TextStyles from '../../../../components/UI/config/TextStyles'
 import moment from 'moment'
 import SkeletonLoader2 from '../../../../components/UI/Loadings/SkeletonLoader2'
-import { FontAwesome6 } from '@expo/vector-icons'
+import { FontAwesome6 } from '@expo/vector-icons' 
 const Stores = () => {
     let tokenn = useSelector((state) => state.login.token);
     const [refreshing, setRefreshing] = useState(false)
@@ -84,11 +84,10 @@ const Stores = () => {
             <LoaderComponents
                 visible={spinnerbool}
             />
-            <View style={{
-                flex: 1,
-                marginTop: insets.top,
+            <View style={{ flex: 1,
+                 marginTop: insets.top,
                 //   marginBottom: insets.bottom
-            }}>
+                  }}>
                 <CustomToolKitHeader componentName={"Stores"} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} />
 
                 <ScrollView
@@ -143,62 +142,29 @@ const Stores = () => {
                             // numColumns={2}
                             renderItem={({ item, index }) => (
                                 <TouchableOpacity key={index}
-                                onPress={() => { navigation.navigate("SingleBranches", { storeId: `${item.storeId}`, branchName: `${item.name}`, data: `${item}` }) }}
 
-                                    // onPress={() => { navigation.navigate("SinglesEnterprise", { enterPriseId: `${item.enterPriseId}`, enterPriseName: `${item.enterPriseName}` }) }}
-                                    // onPress={() => { navigation.navigate("ProductItem", { productId: `${item._id}` }) }}
+                                    onPress={() => { navigation.navigate("SingleBranches", { storeId: `${item.storeId}`, branchName: `${item.name}`, data: `${item}` }) }}
                                     style={{
+
+                                        flexDirection: 'row',
                                         justifyContent: 'space-between',
-                                        height: Metrics.rfv(285),
-                                        // borderBottomColor: '#DDDDDD', borderBottomWidth: 1,
-                                        borderRadius: 20,
-                                        backgroundColor: 'white',
-                                        padding: 10,
-                                        marginTop: 10
+                                        // height: Metrics.rfv(57),
+                                        paddingHorizontal: 15,
+                                        borderBottomColor: '#DDDDDD', borderBottomWidth: 1,
+                                        // marginHorizontal: 20,
+                                        // marginTop: 10,
+                                        paddingBottom: 10
+
                                     }}>
-
-
-                                    <View style={{ flex: 0.8 }}>
-                                        {item.profilePicture ? <LoadingImage
-                                            source={{ uri: `${item.profilePicture}` }}
-                                            style={{
-                                                // height:'70%',
-                                                // aspectRatio: 1.93,
-                                                borderRadius: 10
-                                            }}
-                                            loaderColor="#ff0000"
-                                        // resizeMode="cover"
-                                        /> : <View
-                                            style={{
-                                                justifyContent: 'space-between',
-                                            }}>
-                                            <SkeletonLoader2
-                                                style={{
-                                                    marginTop: 10,
-                                                    width: '100%',
-                                                    height: '90%',
-                                                    borderRadius: 5,
-                                                }}
-                                            >
-
-                                            </SkeletonLoader2>
-
-                                            <View style={{ position: 'absolute', alignSelf: 'center', height: '100%', justifyContent: 'center' }}>
-                                                <Text style={[styles.TextFontA2, styles.TextStyle400, { textAlign: 'center', marginTop: 5, }]}>No Store Profile</Text>
-                                            </View>
-                                        </View>}
-                                    </View>
-                                    <View style={{ flex: 0.2,paddingTop:10 }}>
-                                        <Text style={{ fontFamily: 'Poppins-Medium', fontWeight: 800, fontSize: Metrics.rfv(18) , color: '#E29547',}}>
-                                            {item.name}
-                                        </Text>
-                                        <Text style={[{ width: '100%', fontWeight: 800, marginBottom: 2, fontSize: 12,marginTop:5 }]}
-                                            numberOfLines={2}
-                                        >{item.address}</Text>
+                                    <View style={{ width: "90%" }}>
+                                        <Text style={{ fontSize: Metrics.rfv(15), color: '#474464', fontWeight: 400, fontFamily: 'Poppins-Medium', marginTop: 10 }} numberOfLines={2}>{item.name}</Text>
+                                        <Text style={{ fontSize: Metrics.rfv(10), color: '#474464', fontWeight: 400, fontFamily: 'Poppins-Medium', }} numberOfLines={2}>{item.address}</Text>
                                     </View>
 
-
-
+                                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                        <FontAwesome6 name="arrow-right" size={15} color="black" style={{ marginTop: 12 }} />
+                                    </View>
+                                    {/* <Text style={{ fontSize: Metrics.rfv(15), color: '#474464', fontWeight: 400,fontFamily:'Poppins-Medium',marginTop:10}}>LK</Text> */}
                                 </TouchableOpacity>
                             )}
                             ListFooterComponent={(

@@ -1,5 +1,5 @@
-import { Alert,  Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { Alert, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { useDispatch } from 'react-redux'
 import GlobalStyles from '../../components/UI/config/GlobalStyles'
@@ -14,7 +14,7 @@ import { LoginPageYupSchema } from '../../formikYupSchemas/Auth/LoginPageYupSche
 import { Entypo } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../../components/UI/Buttons/CustomButton'
-import { UserLoginApi, UserRegisterOTPApi, verifyOTPAPI } from '../../network/ApiCalls'
+import { resendRegisterOpt, UserLoginApi, UserRegisterOTPApi, verifyOTPAPI } from '../../network/ApiCalls'
 import AsyncStorage_Calls from '../../utils/AsyncStorage_Calls'
 import { setToken } from '../../redux/actions/LoginAction'
 import { CustomAlerts_OK } from '../../utils/CustomReuseAlerts'
@@ -158,6 +158,54 @@ const RegisterVerifty = ({ route }) => {
 
     }
 
+
+    const ResendOtpApiCaller = async () => {
+        try {
+            const res = await resendRegisterOpt(token)
+            if (res.data) {
+                toast.hideAll()
+                toast.show(res.data.message)
+            }
+        } catch (error) {
+            console.log("Error")
+            Alert.alert(error.response.data.message)
+        }
+    }
+
+
+
+
+
+
+
+    const [disabled, setDisabled] = useState(true);
+    const [timer, setTimer] = useState(45);
+
+    const handleResend = () => {
+      if (disabled) return;
+
+      ResendOtpApiCaller();
+      resetForm();
+      seterrorFormAPI();
+
+      setDisabled(true);
+      setTimer(45); // 45 seconds delay
+    };
+
+    useEffect(() => {
+      let interval;
+      if (disabled && timer > 0) {
+        interval = setInterval(() => {
+          setTimer(prev => prev - 1);
+        }, 1000);
+      } else if (timer === 0 && disabled) {
+        setDisabled(false);
+        clearInterval(interval);
+      }
+
+      return () => clearInterval(interval);
+    }, [timer, disabled]);
+
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
             <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
@@ -171,9 +219,9 @@ const RegisterVerifty = ({ route }) => {
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                 >
-              <KeyboardAwareScrollView behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-                                     contentContainerStyle={{ flex:1, }}
-                                 >
+                    <KeyboardAwareScrollView behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                        contentContainerStyle={{ flex: 1, }}
+                    >
                         <View style={{ flex: 1, }}>
                             {/* <View style={{ flex: 0.15, justifyContent: 'flex-end', alignItems: 'center' }}>
                                 <Image
@@ -189,37 +237,48 @@ const RegisterVerifty = ({ route }) => {
 
                                 <Text style={[TextStyles.TEXTSTYLE_HEADING_H1, { marginBottom: 10 }]}>{`Verification code`}</Text>
                                 <Text style={[TextStyles.TEXTSTYLE_PARA_12, { marginBottom: 35 }]}>We have sent the verification code to your email address.</Text>
-<View style={{justifyContent:'center',alignItems:'center'}}>
+                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
 
 
-                                <CustomOtpInput
-                                    value={values.otp}
-                                    length={6}
-                                    keyboardType="number-pad"
-                                    onOtpSubmit={(otp) => {
-                                        // console.log("otp vachinda", otp);
-                                        seterrorFormAPI() //Clear's All API errors
-                                        handleChange("otp")(otp)
-                                    }}
-                                    onChangeText={(index, value) => {
-                                        // console.log("index", index, ">value", value)
-                                    }}
-                                    // errorMessage={errorFormAPI.otp}
-                                    errorMessage={`${(errors.otp && touched.otp) ? `${errors.otp}` : (errorFormAPI && errorFormAPI.otp) ? `${errorFormAPI.otp}` : ``}`}
+                                    <CustomOtpInput
+                                        value={values.otp}
+                                        length={6}
+                                        keyboardType="number-pad"
+                                        onOtpSubmit={(otp) => {
+                                            // console.log("otp vachinda", otp);
+                                            seterrorFormAPI() //Clear's All API errors
+                                            handleChange("otp")(otp)
+                                        }}
+                                        onChangeText={(index, value) => {
+                                            // console.log("index", index, ">value", value)
+                                        }}
+                                        // errorMessage={errorFormAPI.otp}
+                                        errorMessage={`${(errors.otp && touched.otp) ? `${errors.otp}` : (errorFormAPI && errorFormAPI.otp) ? `${errorFormAPI.otp}` : ``}`}
 
-                                    errorBoxid={errorFormAPI ? [0, 1, 2, 3,] : ""}
-                                // onClear={clearOtp}
-                                />
+                                        errorBoxid={errorFormAPI ? [0, 1, 2, 3,] : ""}
+                                    // onClear={clearOtp}
+                                    />
                                 </View>
+
+
 
                                 <View style={{ marginTop: 20, flexDirection: 'row', alignSelf: 'center' }}>
-                                    {/* <Text style={[{ color: 'black', fontWeight: '400' }]}>Already registered ?</Text> */}
-                                    <TouchableOpacity onPress={() => {
-                                        navigation.navigate("Login")
-                                        resetForm()
-                                        seterrorFormAPI()
-                                    }} style={{}}><Text style={[{ color: 'black', fontWeight: '500' }]}> Resend</Text></TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>{handleResend()}} disabled={disabled}
+                                        >
+                                        <Text style={{ color: disabled ? 'gray' : 'black', fontWeight: '500' }}>
+                                            {disabled ? `Resend in ${timer}s` : 'Resend'} 
+                                        </Text>
+                                    </TouchableOpacity>
                                 </View>
+
+                                {/* <View style={{ marginTop: 20, flexDirection: 'row', alignSelf: 'center' }}>
+                                    <TouchableOpacity onPress={() => { ResendOtpApiCaller() }}
+                                    >
+                                        <Text style={{ color: disabled ? 'gray' : 'black', fontWeight: '500' }}>
+                                            {'Resend'}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View> */}
 
                                 <CustomButton
                                     // boxWidth={'95%'}
@@ -230,7 +289,7 @@ const RegisterVerifty = ({ route }) => {
                                         //     Alert.alert("Please Select the Terms and Conditions")
                                         // }
                                     }}
-                                    bgColor={`${isValid && isChecked ? PRIMARY_COLOR : PRIMARY_LIGHT_COLOR}`}
+                                    bgColor={`${isValid ? PRIMARY_COLOR : PRIMARY_LIGHT_COLOR}`}
                                     style={{ marginTop: 50 }}>
                                     Next
                                 </CustomButton>

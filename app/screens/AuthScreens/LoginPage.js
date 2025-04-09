@@ -27,6 +27,8 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { fcmTokenAction } from '../../redux/actions/fcmTokenAction'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { MainLogoutSystem } from '../../utils/LogOutHandle'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginPage = () => {
 
@@ -40,17 +42,14 @@ const LoginPage = () => {
     const [expoPushToken, setExpoPushToken] = useState('');
 
 
-    let fcmTokenRedux = useSelector((state) => state?.fcmTokenReducer?.fcmToken||"");
-
-
-    console.log("fcmTokenRedux >>", fcmTokenRedux)
+    let fcmTokenRedux = useSelector((state) => state?.fcmTokenReducer?.fcmToken || "");
+    // console.log("fcmTokenRedux >>", fcmTokenRedux)
     const onRefresh = () => {
         setTimeout(() => {
             setRefreshing(false)
         }, 1000)
     }
     const insets = useSafeAreaInsets();
-    console.log("insets", insets)
 
 
 
@@ -104,16 +103,13 @@ const LoginPage = () => {
                 console.log(token)
                 token && setExpoPushToken(token)
                 if (token) {
-
                     setFieldValue('fcmToken', token)
                     dispatch(fcmTokenAction(token))
                 } else {
                     setFieldValue('fcmToken', "null")
                 }
-                // console.log(">>>",expoPushToken)
             })
             .catch((err) => { console.log(err) })
-
         console.log("Registering  for push notification..")
     }, [])
 
@@ -136,7 +132,8 @@ const LoginPage = () => {
             //   password: ZInitialValues?.login?.password || "",
             email: "",
             password: "",
-            fcmToken: ""
+            fcmToken: "",
+            type:Platform.OS
         },
 
         onSubmit: values => {
@@ -158,18 +155,18 @@ const LoginPage = () => {
 
 
 
+console.log("values.type",values.type)
     const submitHandler = async (values) => {
         seterrorFormAPI()
         setSpinnerbool(true)
         setShow({ password: false })
+
         try {
             const res = await UserLoginApi(values);
+            console.log("dsjhvsh", res.data)
             if (res.data) {
                 const token = res.data.token
                 const message = res.data.message
-                console.log("re", res.data)
-
-                
 
                 if (res.data.kycStatus == "agreement") {
                     toast.show(message)
@@ -179,9 +176,6 @@ const LoginPage = () => {
                         }, 500);
                     })
                 }
-
-
-             
                 // 
                 // else if (res.data.kycStatus == "address") {
                 //     toast.show(message)
@@ -210,35 +204,33 @@ const LoginPage = () => {
                 }
             }
         } catch (error) {
-            console.log("error console", error.response.status)
-            if (error.response) {
-                if (error.response.status === 400) {
+            console.log("error console", error.response.data.message)
+            if (error.response.status === 400) {
+                if (error.response.data.message == "Invalid user, please register") {
+                    seterrorFormAPI({ emailForm: `${error.response.data.message}` })
+                } else if (error.response.data.message == "Password is wrong") {
                     seterrorFormAPI({ passwordForm: `${error.response.data.message}` })
-                }
-                else if (error.response.status === 401) {
-                    seterrorFormAPI({ passwordForm: `${error.response.data.message}` })
-                }
-                else if (error.response.status === 404) {
+                } else {
                     seterrorFormAPI({ emailForm: `${error.response.data.message}` })
                 }
-                else if (error.response.status === 422) {
-                    seterrorFormAPI({ passwordForm: `${error.response.data.message}` })
-                }
-                else if (error.response.status === 301) {
-                    navigation.navigate('VerificationCode', { email: values.email })
-                }
+            } else if (error.response.status === 301) {
+                console.log(error.response.data)
+                CustomAlerts_OK("Email is already existed. ", "You need to create your password. Please verify the otp, then you can create your password", () => {
+                    setTimeout(() => {
+                        navigation.navigate("AddAddressScreen", { token: token })
+                    }, 500);
+                })
+                seterrorFormAPI({ emailForm: `${error.response.data.message}` })
             }
             else {
                 HandleCommonErrors(error)
             }
-
-            setSpinnerbool(false)
         }
         finally {
             setSpinnerbool(false)
         }
     }
-
+   
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
             <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
@@ -253,7 +245,7 @@ const LoginPage = () => {
                     showsHorizontalScrollIndicator={false}
                 >
                     <KeyboardAwareScrollView behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-                        contentContainerStyle={{ flex:1, }}
+                        contentContainerStyle={{ flex: 1, }}
                     >
                         <View style={{ flex: 1, }}>
                             <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
@@ -339,6 +331,8 @@ const LoginPage = () => {
                                     style={{ marginTop: 50 }}>
                                     Login
                                 </CustomButton>
+
+
 
                                 <View style={{ marginTop: 20, flexDirection: 'row', alignSelf: 'center' }}>
                                     <Text style={[{ color: 'black', fontWeight: '400' }]}>Don't have an account yet? </Text><TouchableOpacity onPress={() => {

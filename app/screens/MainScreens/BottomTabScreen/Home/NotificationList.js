@@ -83,45 +83,13 @@ const NotificationList = ({ route }) => {
         }, [])
     )
 
-    const renderItem1 = ({ item }) => {
-        return (
-            <View style={{ marginVertical: 10 }}>
 
-
-                <TouchableOpacity style={{ flex: 1, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'space-around' }} onPress={() => { console.log("Hello Notification Id", item.routeTo) }}>
-
-                    <View style={{ flex: 1 }}>
-                        <Text>{item.title}</Text>
-                        <Text style={{ color: '#B0B0C1' }}>{item.title}</Text>
-                    </View>
-
-                    <View style={{ flex: 0.1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Image style={{ width: 24, height: 24 }}
-                            source={require("../../../../assets/images/Profile/chevron_right.png")}
-                        />
-                    </View>
-                </TouchableOpacity>
-                <View style={{ borderBottomColor: '#B0B0C1', borderBottomWidth: 1, marginHorizontal: 15, marginTop: 10 }}></View>
-            </View>
-        )
-    }
 
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
             <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
             <View style={{ flex: 1, marginTop: insets.top, marginBottom: insets.bottom }}>
                 <CustomToolKitHeader componentName={"Notifications"} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} />
-
-                {/* <ScrollView
-                    keyboardShouldPersistTaps="handled"
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                >
-                    <View>
-
-                    </View>
-                </ScrollView> */}
 
 
                 <FlatList
@@ -131,10 +99,18 @@ const NotificationList = ({ route }) => {
                         <TouchableOpacity key={index}
 
                             onPress={() => {
-                                if(item.data.navigateTo){
-                                     navigation.navigate(`${item.data.navigateTo}`) 
-                                }else{
-                                    
+                                if (item.data.navigateTo == "home") {
+                                    navigation.navigate("BottomTabScreen")
+                                }
+                                else if (item.data.navigateTo) {
+                                    try {
+                                        
+                                        navigation.navigate(`${item.data.navigateTo}`)
+                                    } catch (error) {
+                                        navigation.navigate("BottomTabScreen")
+                                    }
+                                }else {
+
                                 }
                             }}
                             style={{

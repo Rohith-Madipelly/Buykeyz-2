@@ -139,9 +139,9 @@ const AddDeliveryAddress = () => {
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                 >
-                   <KeyboardAwareScrollView behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                    <KeyboardAwareScrollView behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                         contentContainerStyle={{ flex: 1, }}
-                      >
+                    >
                         <View style={{ flex: 1, }}>
                             {/* <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
                 <Image
@@ -154,8 +154,8 @@ const AddDeliveryAddress = () => {
                 />
               </View> */}
                             <View style={{ flex: 0.7, justifyContent: 'flex-start', marginHorizontal: LEFT_AND_RIGHT_PADDING }}>
-                             
-                            <CustomTextInput
+
+                                <CustomTextInput
                                     boxWidth={'100%'}
                                     label={'Name'}
                                     placeholder={'Name'}
@@ -397,9 +397,9 @@ const AddDeliveryAddress = () => {
                                     errorMessage={`${(errors.phoneNumber && touched.phoneNumber) ? `${errors.phoneNumber}` : (errorFormAPI && errorFormAPI.phoneNumberForm) ? `${errorFormAPI.phoneNumberForm}` : ``}`}
                                 />
 
-                      
 
-                               
+
+
 
                                 <CustomButton
                                     // boxWidth={'95%'}

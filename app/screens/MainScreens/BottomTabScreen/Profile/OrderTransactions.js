@@ -180,6 +180,9 @@ const ChangePassword = () => {
                                                 <Text style={{ fontWeight: 900 }}>
                                                     Delivery Address : </Text>{item.address} {item.landMark} {item.pincode}
                                             </Text>
+                                            <View>
+                                         
+                                            </View>
                                         </View>
 
 
