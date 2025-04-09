@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "12",
+      "buildNumber": "17",
       "bundleIdentifier": "com.aits.buykeyz",
       "config": {
         "usesPushNotifications": true,

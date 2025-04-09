@@ -48,8 +48,12 @@ const Home = ({ route }) => {
         try {
             const res = await HomeAPI(tokenn)
             if (res.data) {
-                setAPIData()
-                setAPIData(res.data)
+                console.log(res.data)
+                // setAPIData()
+                setTimeout(() => {
+                    setAPIData(res?.data)
+                    
+                }, 500);
             }
 
         } catch (error) {
@@ -128,12 +132,12 @@ const Home = ({ route }) => {
                         </View>
 
                         <View style={{}}>
-                            {APIData && APIData.allBanners?.length > 0 && <CustomImageCarousel
+                            {APIData && APIData?.allBanners?.length > 0 && <CustomImageCarousel
                                 width={Metrics.width}
                                 height={Metrics.width * 0.562}
                                 // height={Metrics.rfv(200)}
                                 scrollAnimationDuration={4000}
-                                bannersData={APIData.allBanners}
+                                bannersData={APIData?.allBanners}
                                 onPress={(e) => {
                                     console.log("Hello e", e)
                                     navigation.navigate("Stores")
