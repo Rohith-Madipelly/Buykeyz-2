@@ -421,13 +421,22 @@ const ProductItem = ({ route }) => {
                                         </View>
                                     </>} */}
 
+{console.log("APIData.status",APIData.status)}
                                 <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
-                                    <TouchableOpacity style={{ backgroundColor: '#4A3AFF', width: '80%', padding: 20, borderRadius: 10 }} onPress={() => {
+                                    {APIData.status!="Out Of Stock"?<TouchableOpacity style={{ backgroundColor: '#4A3AFF', width: '80%', padding: 20, borderRadius: 10 }} onPress={() => {
                                         // BuyProductAPI()
                                         navigation.navigate("CheckoutProduct", { productId: productId, quantity: productItems, productData: APIData })
                                     }}>
                                         <Text style={{ textAlign: 'center', textAlignVertical: 'center', color: 'white', fontWeight: 700 }}>Purchase Now</Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity>:<TouchableOpacity style={{ backgroundColor: '#4A3AFF', width: '80%', padding: 20, borderRadius: 10 }} 
+                                    disabled={true}
+                                    onPress={() => {
+                                        Alert.alert("")
+                                        // BuyProductAPI()
+                                        // navigation.navigate("CheckoutProduct", { productId: productId, quantity: productItems, productData: APIData })
+                                    }}>
+                                        <Text style={{ textAlign: 'center', textAlignVertical: 'center', color: 'white', fontWeight: 700 }}>{APIData.status}</Text>
+                                    </TouchableOpacity>}
                                 </View>
                             </View>
 

@@ -366,7 +366,7 @@ const AddDeliveryAddress = () => {
                                 />
 
 
-                                <CustomTextInput
+                                {/* <CustomTextInput
                                     boxWidth={'100%'}
                                     label={'Email Phone Number'}
                                     placeholder={'Enter phoneNumber'}
@@ -395,7 +395,7 @@ const AddDeliveryAddress = () => {
                                     outlined
                                     borderColor={`${(errors.phoneNumber && touched.phoneNumber) || (errorFormAPI && errorFormAPI.phoneNumberForm) ? "red" : GlobalStyles.InputBorderColor}`}
                                     errorMessage={`${(errors.phoneNumber && touched.phoneNumber) ? `${errors.phoneNumber}` : (errorFormAPI && errorFormAPI.phoneNumberForm) ? `${errorFormAPI.phoneNumberForm}` : ``}`}
-                                />
+                                /> */}
 
 
 

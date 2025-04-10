@@ -28,9 +28,10 @@ const OrderHistory = () => {
     const navigation = useNavigation()
 
     const onRefresh = () => {
-        setTimeout(() => {
-            setRefreshing(false)
-        }, 1000)
+        ApiCaller()
+        // setTimeout(() => {
+        //     setRefreshing(false)
+        // }, 1000)
     }
     const insets = useSafeAreaInsets();
     console.log("insets", insets)
@@ -67,6 +68,7 @@ const OrderHistory = () => {
         }
         finally {
             setSpinnerbool(false)
+            setRefreshing(false)
         }
     }
 

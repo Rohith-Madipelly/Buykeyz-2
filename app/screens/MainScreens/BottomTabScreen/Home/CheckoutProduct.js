@@ -209,10 +209,11 @@ const CheckoutProduct = ({ route }) => {
                 console.log(" wekkj", res.data)
                 var orderData = await res.data.orders
                 console.log("dsnhvg ...............................", res.data, orderData)
+                console.log("dsnhvg ...............................[]", res.data.razorPayKey)
 
                 if (res.data.orders) {
                     console.log("avhdgcwj kk", res.data.orders)
-                    RazorPayModule("", orderData, tokenn, navigation)
+                    RazorPayModule("", orderData, tokenn, navigation,res.data.razorPayKey)
                 } else {
                     console.log
                     toast.hideAll()
