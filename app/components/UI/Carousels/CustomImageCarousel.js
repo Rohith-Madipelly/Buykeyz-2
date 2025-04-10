@@ -13,7 +13,8 @@ const CustomImageCarousel = ({
     imageStyling,
     scrollAnimationDuration,
     showIndicators = false,
-    disabledonPress = false
+    disabledonPress = false,
+    maxHeight
 }) => {
     const carouselData = bannersData.length > 0 ? bannersData : [];
     const filteredPictures = carouselData.filter(item => item !== null);
@@ -61,12 +62,12 @@ const CustomImageCarousel = ({
     );
 
     return (
-        <View style={{ width, height: showIndicators ? height + 30 : height }}>
+        <View style={{ width, height: showIndicators ? height + 30 : height,maxHeight:maxHeight }}>
             {filteredPictures.length > 0 ? (
                 <Carousel
                     loop
                     width={width}
-                    height={height}
+                    height={height>maxHeight?maxHeight:height}
                     autoPlay={autoPlay}
                     data={filteredPictures}
                     scrollAnimationDuration={scrollAnimationDuration || 2000}

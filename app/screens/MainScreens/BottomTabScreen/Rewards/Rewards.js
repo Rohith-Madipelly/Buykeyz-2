@@ -136,7 +136,7 @@ const Rewards = () => {
                                             </View>
                                             <LoadingImage
                                                 source={{ uri: item.picture || 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQv8QQQl2a6TAJSiKEqFQDiLxDUbipyYUBSv-NA7KdUl1c-OZFFKJMAP7M9iX2nBfo_CyWUmF5o4DzNf0pfYz7orP3_LHJn7Au50cwdxRDe' }}
-                                                style={{ width: '100%', height: Metrics.rfv(180), borderRadius: 10 }}
+                                                style={{ width: '100%', height: Metrics.rfv(190), borderRadius: 10 }}
                                             />
                                         </View>
     
@@ -148,7 +148,7 @@ const Rewards = () => {
                                             <Text style={[TextStyles.TEXTSTYLE_B16, { color: '#07005B', width: '100%' }]} numberOfLines={1}>{item.title}</Text>
     
                                         </View>
-                                        <Text style={[TextStyles.TEXTSTYLE_B14, { color: '#07005B', marginHorizontal: 10 }]} numberOfLines={3}>{item.description}</Text>
+                                        <Text style={[TextStyles.TEXTSTYLE_B14, { color: '#07005B', marginHorizontal: 10,marginBottom:10 }]} numberOfLines={3}>{item.description}</Text>
                                     </View>
                                 </TouchableOpacity>
                             )}

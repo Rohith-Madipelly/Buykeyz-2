@@ -19,6 +19,8 @@ import CustomCheckBox from '../../components/UI/Inputs/CustomCheckBox'
 import { RegisterPageYupSchema } from '../../formikYupSchemas/Auth/RegisterPageYupSchema'
 import LoaderComponents from '../../components/UI/Loadings/LoaderComponents'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import BackIcon from '../../assets/svg/BackIcon'
+import Metrics from '../../utils/resposivesUtils/Metrics'
 const RegisterPage = () => {
     const [errorFormAPI, seterrorFormAPI] = useState("")
     const [spinnerbool, setSpinnerbool] = useState(false)
@@ -155,12 +157,32 @@ const RegisterPage = () => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
-                >
+                > 
                     <KeyboardAwareScrollView behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                         contentContainerStyle={{ flex: 1, }}
                     >
                         <View style={{ flex: 1, }}>
+                        <TouchableOpacity style={{
+                                position: 'absolute',
+                                marginTop: Metrics.rfv(20), marginLeft: LEFT_AND_RIGHT_PADDING, borderRadius: 30,
+                                // backgroundColor: "red",
+                                padding: 5,
+                                justifyContent:'center',
+                                alignItems:'center'
 
+                            }}
+                                onPress={() => { navigation.goBack() }}>
+                                <View style={{
+                                    // position: 'absolute',
+                                    // marginTop: Metrics.rfv(20), marginLeft: LEFT_AND_RIGHT_PADDING, 
+                                    borderRadius: 30,
+                                    backgroundColor: PRIMARY_LIGHT_COLOR,
+
+                                }}>
+                                    <BackIcon />
+
+                                </View>
+                            </TouchableOpacity>
                             <View style={{ flex: 0.7, justifyContent: 'center', marginHorizontal: LEFT_AND_RIGHT_PADDING }}>
 
                                 <Text style={[TextStyles.TEXTSTYLE_HEADING_H1, { marginBottom: 10 }]}>{`Signup \nEmail Verification`}</Text>

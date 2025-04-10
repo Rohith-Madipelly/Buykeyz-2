@@ -26,11 +26,13 @@ const LoadingImage = ({ source, style, loaderColor = '#0000ff', ...props }) => {
       }
       <Image
         style={[styles.image, style]}
-      source={source}
-      // onLoadStart={handleImageLoadStart}
-      // onLoadEnd={handleImageLoadEnd}
-      onError={handleImageError} // Handle image error and fallback to default error image
-      {...props}
+        // style={{width:200,height:200}}
+        source={source}
+        // contentFit={"fill"}
+        // onLoadStart={handleImageLoadStart}
+        // onLoadEnd={handleImageLoadEnd} 
+        onError={handleImageError} // Handle image error and fallback to default error image
+        {...props}
       />
     </View>
   );

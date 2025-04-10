@@ -54,7 +54,7 @@ const ProductItem = ({ route }) => {
             //   setSpinnerbool(true)
             const res = await GET_SINGLE_PRODUCT(productId, tokenn)
             if (res) {
-                console.log("dchvbdjhv",res.data.productDetails)
+                console.log("dchvbdjhv", res.data.productDetails)
                 setAPIData(res.data.productDetails)
                 setAPIData2(res.data.similarProducts)
             }
@@ -275,20 +275,22 @@ const ProductItem = ({ route }) => {
             <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
             <View style={{ flex: 1, marginTop: insets.top, marginBottom: insets.bottom }}>
 
-                <CustomToolKitHeader componentName={"Product Item "} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} />
+                <CustomToolKitHeader
+                    componentName={"Product Item "}
+                    backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} />
                 <View style={{ width: '100%', height: '100%', }}>
                     <ScrollView
                         ref={scrollViewRef}
                     // contentContainerStyle={{ height:'100%' }}
                     >
-
-                        <View style={{ flex: 0.3, overflow: 'hidden', alignItems: 'center' }}>
+                        <View style={{ overflow: 'hidden', alignItems: 'center' }}>
                             {APIData && <CustomImageCarousel
                                 width={Metrics.width}
-                                height={Metrics.width}
+                                height={Metrics.width >= 1032 ? 600 : Metrics.width}
                                 bannersData={APIData.pictures}
                                 autoPlay={false}
                                 resizeMode={'center'}
+                                // maxHeight={400}
                                 onPress={(e) => {
                                     console.log("Hello e", e)
                                 }}
@@ -349,7 +351,7 @@ const ProductItem = ({ route }) => {
 
                                     </View>
 
-                                    <View style={{ width: '26%', flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10, alignItems: 'center' }}>
+                                    <View style={{ width: '26%',maxWidth:150 ,flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10, alignItems: 'center' }}>
                                         <TouchableOpacity
                                             onPress={() => { DecrementProduct() }}
 
@@ -377,7 +379,7 @@ const ProductItem = ({ route }) => {
                                         >Description:</Text>
                                     </View>
                                 </View>
-                                <View style={{ padding: 10, paddingTop: 2 }}>
+                                <View style={{ padding: 10, paddingTop: 2}}>
                                     <Text numberOfLines={readMore ? 0 : 2}>{APIData?.description}
                                     </Text>
                                     <Text style={{ fontWeight: 700 }} onPress={() => { setReadMore(!readMore) }}>{readMore ? "read less" : "read more"}</Text>

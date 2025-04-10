@@ -42,6 +42,7 @@ const Stores = () => {
             const res = await ALL_PRODUCTS_API(tokenn);
             if (res.data) {
                 setAPIData(res.data.allProducts);
+                console.log(res.data.allProducts[3])
                 setFilteredData(res.data.allProducts);  // Set filteredData when data is fetched
             }
         } catch (error) {
@@ -72,6 +73,8 @@ const Stores = () => {
     )
 
     const LoadingData = [1, 2, 3, 4, 5]
+
+
 
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
@@ -123,7 +126,9 @@ const Stores = () => {
                             data={filteredData || []}  // Use filteredData here
                             numColumns={2}
                             renderItem={({ item, index }) => (
-                                <View style={[{ backgroundColor: 'white', width: '95%', height: Metrics.height * 0.28, margin: 3, borderRadius: 10 }, GlobalStyles.productBoxdropDownShadow2]}>
+                                <View style={[{ backgroundColor: 'white', width: '95%',
+                                //  height: Metrics.height * 0.28,
+                                  margin: 3, borderRadius: 10 }, GlobalStyles.productBoxdropDownShadow2]}>
                                     <TouchableOpacity style={{ margin: 3 }} onPress={() => { navigation.navigate("ProductItem", { data: item }) }}>
                                         <LoadingImage
                                             source={{ uri: item.picture || "https://buykeyz.s3.ap-south-1.amazonaws.com/products/1743680742209.jpg" }}

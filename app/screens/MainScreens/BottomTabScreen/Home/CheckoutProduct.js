@@ -736,7 +736,7 @@ const CheckoutProduct = ({ route }) => {
 
                                             {allLocations && allLocations.length <= 0 && (<View style={{ justifyContent: 'center', alignItems: 'center', height: 160 }}>
                                                 <Text >
-                                                    No Address found
+                                                    No Address found. Please add your address
                                                 </Text>
                                             </View>)}
                                         </ScrollView>

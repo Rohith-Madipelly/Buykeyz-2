@@ -132,8 +132,11 @@ export default function Screen() {
             console.log('NOTIFICATION RESPONSE RECEIVED');
             console.log(response.notification);
 
-            const screenToNavigate = response.notification.request.content.data.screen || "Home";
-            console.log("screenToNavigate>", screenToNavigate)
+            const screenToNavigate = response?.notification?.request?.content?.data?.navigateTo || "Home";
+            const screenToNavigateIos = response?.notification?.request?.trigger?.payload?.navigateTo || "Home";
+           
+            console.log(screenToNavigate,"screenToNavigate","screenToNavigateIos",screenToNavigateIos)
+            console.log("screenToNavigate> xx ", screenToNavigate)
 
             if (navigationRef.isReady()) {
                 try {

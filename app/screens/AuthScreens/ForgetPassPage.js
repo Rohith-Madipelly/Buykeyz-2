@@ -143,7 +143,8 @@ const ForgetPassPage = () => {
 
                             <TouchableOpacity style={{
                                 position: 'absolute',
-                                marginTop: Metrics.rfv(20), marginLeft: LEFT_AND_RIGHT_PADDING, borderRadius: 30,
+                                // marginTop: Metrics.rfv(20),
+                                 marginLeft: LEFT_AND_RIGHT_PADDING, borderRadius: 30,
                                 // backgroundColor: "red",
                                 padding: 5,
                                 justifyContent:'center',
@@ -153,7 +154,7 @@ const ForgetPassPage = () => {
                                 onPress={() => { navigation.goBack() }}>
                                 <View style={{
                                     // position: 'absolute',
-                                    // marginTop: Metrics.rfv(20), marginLeft: LEFT_AND_RIGHT_PADDING, 
+                                    marginTop: Metrics.rfv(20), marginLeft: LEFT_AND_RIGHT_PADDING, 
                                     borderRadius: 30,
                                     backgroundColor: PRIMARY_LIGHT_COLOR,
 
