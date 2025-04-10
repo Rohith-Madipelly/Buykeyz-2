@@ -1,9 +1,7 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import * as Notifications from 'expo-notifications';
-import { Entypo } from '@expo/vector-icons';
 import { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -13,7 +11,6 @@ import RegisterVerifty from './AuthScreens/RegisterVerifty';
 import RegisterCreatePass from './AuthScreens/RegisterCreatePass';
 import RegisterAgreement from './AuthScreens/RegisterAgreement';
 import SuccessfullyAccount from './ShareScreens/SuccessfullyAccount';
-import Home from './MainScreens/BottomTabScreen/Home/Home';
 import ForgetPassPage from './AuthScreens/ForgetPassPage';
 import ForgotOtpVerifty from './AuthScreens/ForgotOtpVerifty';
 import ForgetNewPass from './AuthScreens/ForgetSetPass';
@@ -40,13 +37,10 @@ import PlaceOrderSuccessfully from './ShareScreens/PlaceOrderSuccessfully';
 import SingleBranches from './MainScreens/BottomTabScreen/Home/SingleBranches';
 import SubscriptionList from './MainScreens/Subscriptions/SubscriptionList';
 import ManageSubscriptions from './MainScreens/Subscriptions/ManageSubscriptions';
-import AccountSetupPersonal from './MainScreens/AccoountVerificationScreen/Screens/AccountSetupPersonal';
 import AccountSetupComponent from './MainScreens/AccoountVerificationScreen/ScreenMaintainer/AccountSetupComponent';
-import Test from './MainScreens/Test';
 import RewardWinner from './MainScreens/BottomTabScreen/Rewards/RewardWinner';
 import ViewInvoicesSubscriptions from './MainScreens/Subscriptions/ViewInvoicesSubscriptions';
-import Splash1 from './SplashScreens/Splash1';
-import Splash2 from './SplashScreens/Splash2';
+
 
 
 // Keep the splash screen visible while we fetch resources
@@ -57,6 +51,15 @@ import Splash2 from './SplashScreens/Splash2';
 //     duration: 1000,
 //     fade: true,
 // });
+
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true, // Show alert manually
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+    }),
+});
 
 export default function Screen() {
     const [appIsReady, setAppIsReady] = useState(false);
@@ -181,17 +184,12 @@ export default function Screen() {
 
                             {/* <Stack.Screen name="Test" component={Test} options={{ headerShown: false }} /> */}
                             <Stack.Screen name="BottomTabScreen" component={BottomTabScreen} options={{ headerShown: false }} />
-
                             <Stack.Screen name="Edit_Account" component={Edit_Account} options={{ headerShown: false }} />
                             <Stack.Screen name="DeliveryAddress" component={DeliveryAddress} options={{ headerShown: false }} />
-
                             <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress} options={{ headerShown: false }} />
-
                             <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerShown: false }} />
-
                             <Stack.Screen name="OrderTransactions" component={OrderTransactions} options={{ headerShown: false }} />
                             <Stack.Screen name="OrderHistory" component={OrderHistory} options={{ headerShown: false }} />
-
                             <Stack.Screen name="RewardDetails" component={RewardDetails} options={{ headerShown: false }} />
                             <Stack.Screen name="RewardWinner" component={RewardWinner} options={{ headerShown: false }} />
                             <Stack.Screen name="NotificationList" component={NotificationList} options={{ headerShown: false }} />
