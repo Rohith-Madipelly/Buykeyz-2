@@ -1,7 +1,7 @@
 import { Alert, ImageBackground, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { GET_SINGLE_PRODUCT } from '../../../../network/ApiCalls'
 import CustomStatusBar from '../../../../components/UI/CustomStatusBar/CustomStatusBar'
 import CustomToolKitHeader from '../../../../components/UI/CustomToolKitHeader'
@@ -12,6 +12,8 @@ import Metrics from '../../../../utils/resposivesUtils/Metrics'
 import LoadingImage from '../../../../components/UI/ImageConatiners/LoadingImage'
 import { scrollToTop } from '../../../../utils/Scrolls'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { setToken } from '../../../../redux/actions/LoginAction'
+import AsyncStorage_Calls from '../../../../utils/AsyncStorage_Calls'
 
 const ProductItem = ({ route }) => {
 
@@ -269,6 +271,7 @@ const ProductItem = ({ route }) => {
         }
     }
     const insets = useSafeAreaInsets();
+    const dispatch = useDispatch()
 
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
@@ -289,7 +292,7 @@ const ProductItem = ({ route }) => {
                                 height={Metrics.width >= 1032 ? 600 : Metrics.width}
                                 bannersData={APIData.pictures}
                                 autoPlay={false}
-                                resizeMode={'center'}
+                                contentFit={'center'}
                                 // maxHeight={400}
                                 onPress={(e) => {
                                     console.log("Hello e", e)
@@ -351,7 +354,7 @@ const ProductItem = ({ route }) => {
 
                                     </View>
 
-                                    <View style={{ width: '26%',maxWidth:150 ,flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10, alignItems: 'center' }}>
+                                    <View style={{ width: '26%', maxWidth: 150, flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10, alignItems: 'center' }}>
                                         <TouchableOpacity
                                             onPress={() => { DecrementProduct() }}
 
@@ -379,7 +382,7 @@ const ProductItem = ({ route }) => {
                                         >Description:</Text>
                                     </View>
                                 </View>
-                                <View style={{ padding: 10, paddingTop: 2}}>
+                                <View style={{ padding: 10, paddingTop: 2 }}>
                                     <Text numberOfLines={readMore ? 0 : 2}>{APIData?.description}
                                     </Text>
                                     <Text style={{ fontWeight: 700 }} onPress={() => { setReadMore(!readMore) }}>{readMore ? "read less" : "read more"}</Text>
@@ -421,20 +424,46 @@ const ProductItem = ({ route }) => {
                                         </View>
                                     </>} */}
 
-{console.log("APIData.status",APIData.status)}
+                                {console.log("APIData.status", APIData.status)}
                                 <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
-                                    {APIData.status!="Out Of Stock"?<TouchableOpacity style={{ backgroundColor: '#4A3AFF', width: '80%', padding: 20, borderRadius: 10 }} onPress={() => {
+                                    {APIData.status != "Out Of Stock" ? <TouchableOpacity style={{ backgroundColor: '#4A3AFF', width: '80%', padding: 20, borderRadius: 10 }} onPress={() => {
                                         // BuyProductAPI()
-                                        navigation.navigate("CheckoutProduct", { productId: productId, quantity: productItems, productData: APIData })
+
+                                        if (tokenn == "GuestLogin") {
+                                            Alert.alert(
+                                                "Proceed as Guest",
+                                                "You're not signed in. You can continue in guest mode, but you'll need to log in to complete your purchase.",
+                                                [
+
+                                                    {
+                                                        text: "Dismiss",
+                                                        style: "cancel",
+                                                        // onPress: () => {
+                                                        // //   navigation.goBack()
+                                                        // }
+                                                      },
+                                                    {
+                                                        text: "OK",
+                                                        onPress: () => {
+                                                            // Enable guest mode
+                                                            dispatch(setToken(""))
+                                                        }
+                                                    }
+                                                ]
+                                            );
+
+                                        } else {
+                                            navigation.navigate("CheckoutProduct", { productId: productId, quantity: productItems, productData: APIData })
+                                        }
                                     }}>
                                         <Text style={{ textAlign: 'center', textAlignVertical: 'center', color: 'white', fontWeight: 700 }}>Purchase Now</Text>
-                                    </TouchableOpacity>:<TouchableOpacity style={{ backgroundColor: '#4A3AFF', width: '80%', padding: 20, borderRadius: 10 }} 
-                                    disabled={true}
-                                    onPress={() => {
-                                        Alert.alert("")
-                                        // BuyProductAPI()
-                                        // navigation.navigate("CheckoutProduct", { productId: productId, quantity: productItems, productData: APIData })
-                                    }}>
+                                    </TouchableOpacity> : <TouchableOpacity style={{ backgroundColor: '#4A3AFF', width: '80%', padding: 20, borderRadius: 10 }}
+                                        disabled={true}
+                                        onPress={() => {
+                                            // Alert.alert("")
+                                            // BuyProductAPI()
+                                            // navigation.navigate("CheckoutProduct", { productId: productId, quantity: productItems, productData: APIData })
+                                        }}>
                                         <Text style={{ textAlign: 'center', textAlignVertical: 'center', color: 'white', fontWeight: 700 }}>{APIData.status}</Text>
                                     </TouchableOpacity>}
                                 </View>
@@ -502,7 +531,7 @@ const ProductItem = ({ route }) => {
 
                                             <LoadingImage
                                                 source={{ uri: item.picture }}
-                                                style={{ width: '100%', height: Metrics.height * 0.17, resizeMode: "center" }}
+                                                style={{ width: '100%', height: Metrics.height * 0.17, contentFit: "center" }}
                                             />
                                             <Text style={{ fontSize: 16, fontWeight: 700, paddingLeft: 5, marginTop: 5, marginBottom: 3 }} numberOfLines={3}>{item.name}</Text>
                                             <Text style={[TextStyles.TEXTSTYLE_C20, {
@@ -566,7 +595,7 @@ const ProductItem = ({ route }) => {
                                         <Image
                                             // source={require('../../../assets/Product pic (1).png')}
                                             source={{ uri: item.picture }}
-                                            style={{ resizeMode: 'contain', width: "90%", height: Metrics.rfv(100), position: 'absolute', borderRadius: 8, zIndex: 10, position: 'absolute', top: '10%' }}
+                                            style={{ contentFit: 'contain', width: "90%", height: Metrics.rfv(100), position: 'absolute', borderRadius: 8, zIndex: 10, position: 'absolute', top: '10%' }}
                                         />
                                         <View style={{ width: '100%', height: '70%', backgroundColor: 'white', position: 'absolute', bottom: 0, borderRadius: 8, justifyContent: 'space-between' }}>
                                             <View>

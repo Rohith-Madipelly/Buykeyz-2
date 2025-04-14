@@ -95,6 +95,7 @@ export default function Screen() {
             } else {
                 console.log("Is a user or not", token)
                 if (token != null) {
+                    console.log()
                     dispatch(setToken(token));
                 }
             }
@@ -210,16 +211,12 @@ export default function Screen() {
                     </>) : (
                     <>
                         <Stack.Group>
-
                             <Stack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
-
                             <Stack.Screen name="RegisterPage" component={RegisterPage} options={{ headerShown: false }} />
                             <Stack.Screen name="RegisterVerifty" component={RegisterVerifty} options={{ headerShown: false }} />
                             <Stack.Screen name="RegisterCreatePass" component={RegisterCreatePass} options={{ headerShown: false }} />
                             <Stack.Screen name="RegisterAgreement" component={RegisterAgreement} options={{ headerShown: false }} />
-
                             <Stack.Screen name="SuccessfullyAccount" component={SuccessfullyAccount} options={{ headerShown: false }} />
-
                             <Stack.Screen name="ForgetPassPage" component={ForgetPassPage} options={{ headerShown: false }} />
                             <Stack.Screen name="ForgotOtpVerifty" component={ForgotOtpVerifty} options={{ headerShown: false }} />
                             <Stack.Screen name="ForgetSetPassword" component={ForgetNewPass} options={{ headerShown: false }} />

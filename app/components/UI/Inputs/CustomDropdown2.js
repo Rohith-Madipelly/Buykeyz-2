@@ -90,7 +90,7 @@ const CustomDropdown2 = ({
                                 selectedItem.images ?
                                     <Image
                                         source={selectedItem.images}
-                                        style={{ width: 40, height: 35, resizeMode: 'center' }}
+                                        style={{ width: 40, height: 35, contentFit: 'center' }}
                                     /> : "" :""
                             } */}
 
@@ -110,7 +110,7 @@ const CustomDropdown2 = ({
                     renderItem={(item, index, isSelected) => {
                         return (
                             <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: 'rgba(40, 62, 113, 1)' }) }}>
-                                {item.images ? <Image source={item.images} style={{ width: 40, height: 35, resizeMode: 'center' }} /> : <View style={{ height: 35 }}></View>}
+                                {item.images ? <Image source={item.images} style={{ width: 40, height: 35, contentFit: 'center' }} /> : <View style={{ height: 35 }}></View>}
                                 <Text style={[styles.dropdownItemTxtStyle, { textAlign: 'left', color: isSelected ? "white" : "black" }]}>{item.name}</Text>
                             </View>
                         );

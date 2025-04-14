@@ -184,6 +184,8 @@ export const ADD_ADDRESS_API = async (appReqData, token) => {
 
 // Home Page
 export const HomeAPI = async (token) => {
+
+  
   return await axios.get(`${GUEST_URL}/user/home`, {
     headers: {
       'Authorization': `Bearer ${token}`

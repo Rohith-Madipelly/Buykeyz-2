@@ -27,8 +27,8 @@ export default StyleSheet.create({
     AuthScreenStatusBar1: {
         // color: 'white',
         color: '#F7F7F7',
-        // barStyle: 'dark-content',
-        barStyle: "light",
+        barStyle: 'dark-content',
+        // barStyle: "light",
         hiddenSettings: false,
         hiddenSettingsTrue: true
     },

@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LogOutHandle } from '../../../../utils/LogOutHandle';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomToolKitHeader from '../../../../components/UI/CustomToolKitHeader';
 
 import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -14,6 +14,7 @@ import GlobalStyles from '../../../../components/UI/config/GlobalStyles';
 import Constants from "expo-constants";
 import LoaderComponents from '../../../../components/UI/Loadings/LoaderComponents';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { setToken } from '../../../../redux/actions/LoginAction';
 
 
 
@@ -53,12 +54,12 @@ const renderItem1 = ({ item }) => {
                   {subItem.logo ? <View style={{ marginRight: 18 }}>
                     <Image style={{ width: 24, height: 24, marginBottom: 4, flex: 1, alignItems: 'center', justifyContent: 'center' }}
                       source={subItem.logo}
-                      resizeMode={"contain"} />
+                      contentFit={"contain"} />
                   </View> : ""}
                   {subItem.myIcon ? <View style={{ marginRight: 18 }}>
                     {/* <Image style={{ width: 24, height: 24, marginBottom: 4, flex: 1, alignItems: 'center', justifyContent: 'center' }}
                       source={subItem.logo}
-                      resizeMode={"contain"} /> */}
+                      contentFit={"contain"} /> */}
                     {subItem.myIcon}
                   </View> : ""}
 
@@ -70,7 +71,7 @@ const renderItem1 = ({ item }) => {
                   <View style={{ flex: 0.1 }}>
                     <Image style={{ width: 24, height: 24 }}
                       source={require("../../../../assets/images/Profile/chevron_right.png")}
-                      resizeMode={"contain"} />
+                      contentFit={"contain"} />
                   </View>
                 </View>
 
@@ -164,16 +165,64 @@ const styles = StyleSheet.create({
 });
 
 const Profile = () => {
-
+  let tokenn = useSelector((state) => state.login.token);
   const navigation = useNavigation();
   const dispatch = useDispatch()
+  const [canNavigate, setCanNavigate] = useState(true)
+
+
+  useEffect(() => {
+    if (tokenn == "GuestLogin") {
+      console.log("GuestLogin")
+      setCanNavigate(false)
+    }
+  }, [])
+
+  const SendOut = () => {
+    Alert.alert(
+      "Proceed as Guest",
+      "You're not signed in. You can continue in guest mode, but you'll need to log in",
+      [
+
+        {
+          text: "Dismiss",
+          style: "cancel",
+          // onPress: () => {
+          // //   navigation.goBack()
+          // }
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            // Enable guest mode
+            dispatch(setToken(""))
+          }
+        }
+      ]
+    );
+  }
+
   const menuItems = [
 
     {
       title: 'Your account',
       subItems: [
-        { title: 'Account Details', logo: require("../../../../assets/images/Profile/edit.png"), onPress: () => navigation.navigate('Edit_Account') },
-        { title: 'Delivery Address', logo: require("../../../../assets/images/Profile/Delivery.png"), onPress: () => navigation.navigate('DeliveryAddress') },
+        { title: 'Account Details', logo: require("../../../../assets/images/Profile/edit.png"), 
+         
+          onPress: () => {
+            canNavigate ?
+            navigation.navigate('Edit_Account') : SendOut()
+          }
+        },
+        {
+          title: 'Delivery Address', logo: require("../../../../assets/images/Profile/Delivery.png"),
+          // onPress: () => navigation.navigate('DeliveryAddress') 
+          onPress: () => {
+            canNavigate ?
+              navigation.navigate('DeliveryAddress') : SendOut()
+          }
+
+        },
       ],
     },
     {
@@ -185,19 +234,29 @@ const Profile = () => {
         {
           title: 'Change Password', myIcon: <Feather name="lock" size={24} color="black" />,
           // logo: require("../../../../assets/images/Profile/Password.png"), 
-          onPress: () => navigation.navigate('ChangePassword')
+
+          onPress: () => {
+            canNavigate ?
+              navigation.navigate('ChangePassword') : SendOut()
+          }
         },
         {
           title: 'Orders History',
           myIcon: <MaterialIcons name="manage-history" size={24} color="black" />,
           // logo: require("../../../../assets/images/Profile/deployed_code_history.png"), 
-          onPress: () => navigation.navigate('OrderHistory')
+          onPress: () => {
+            canNavigate ?
+              navigation.navigate('OrderHistory') : SendOut()
+          }
         },
         {
           title: 'Order Transactions',
           myIcon: <Ionicons name="receipt-outline" size={24} color="black" />,
           // logo: require("../../../../assets/images/Profile/receipt_long.png"),
-           onPress: () => navigation.navigate('OrderTransactions')
+          onPress: () => {
+            canNavigate ?
+              navigation.navigate('OrderTransactions') : SendOut()
+          }
         },
         // { title: 'Delete account', logo: require("../../../assets/Profile/trash_02.png"), onPress: () => console.log('Delete Account pressed') },
         // { title: 'Delete account', logo: require("../../../assets/Profile/trash_02.png"), onPress: () => console.log('Delete Account pressed') },
@@ -207,9 +266,11 @@ const Profile = () => {
       title: 'Others Details',
       subItems: [
         { title: 'Terms and Conditions', onPress: () => navigation.navigate('TermsandConditions') },
-        { title: 'Privacy Policy', 
+        {
+          title: 'Privacy Policy',
           // myIcon:<MaterialIcons name="policy" size={24} color="black" />,
-          onPress: () => navigation.navigate('PrivacyPolicy') },
+          onPress: () => navigation.navigate('PrivacyPolicy')
+        },
         { title: 'Delete Account Policy', onPress: () => navigation.navigate('DeleteAccountPolicy') },
         { title: 'Return and Refund Policy', onPress: () => navigation.navigate('ReturnAndRefendPolicy') },
         // { title: 'Disclaimer', onPress: () => console.log('Disclaimer pressed') },
@@ -221,5 +282,7 @@ const Profile = () => {
 
   return <Menu items={menuItems} />;
 };
+
+
 
 export default Profile;

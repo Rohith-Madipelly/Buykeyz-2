@@ -33,7 +33,7 @@ const Stores = () => {
         ApiCaller()
     }
     const insets = useSafeAreaInsets();
-    console.log("insets", insets)
+    // console.log("insets", insets,"tokenn",tokenn)
 
 
     const ApiCaller = async () => {
@@ -167,7 +167,7 @@ const Stores = () => {
                                                 borderRadius: 10
                                             }}
                                             loaderColor="#ff0000"
-                                        // resizeMode="cover"
+                                        // contentFit="cover"
                                         /> : <View
                                             style={{
                                                 justifyContent: 'space-between',

@@ -9,7 +9,7 @@
     "newArchitecture": false,
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "contentFit": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
@@ -22,7 +22,11 @@
       },
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "NSUserTrackingUsageDescription": "This identifier will be used to deliver personalized ads to you.",
+        "NSCameraUsageDescription": "We use your camera so you can take photos to create a custom profile or share content.",
+        "NSPhotoLibraryUsageDescription": "We access your photo library so you can upload images to your profile or include them in your posts.",
+        "NSMicrophoneUsageDescription": "We use your microphone to record audio.",
+        "NSContactsUsageDescription": "We access your contacts to connect you with friends.",
+        "NSUserNotificationUsageDescription": "We use notifications to keep you informed about important updates and messages.",
         "UIBackgroundModes": ["fetch", "remote-notification"]
       }
     },
@@ -54,6 +58,13 @@
             "backgroundColor": "#000000"
           },
           "imageWidth": 200
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "defaultChannel": "default",
+          "enableBackgroundRemoteNotifications": false
         }
       ]
     ],

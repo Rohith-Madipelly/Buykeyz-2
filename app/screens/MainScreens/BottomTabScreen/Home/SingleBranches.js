@@ -147,7 +147,7 @@ const SingleBranches = ({ navigation, route }) => {
                                                 borderRadius: 10
                                             }}
                                             loaderColor="#ff0000"
-                                        // resizeMode="cover"
+                                        // contentFit="cover"
                                         />
                                     </View>
                                     <View style={{ flex: 0.25 }}>

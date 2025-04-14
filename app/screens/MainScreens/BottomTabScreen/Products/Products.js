@@ -132,7 +132,7 @@ const Stores = () => {
                                     <TouchableOpacity style={{ margin: 3 }} onPress={() => { navigation.navigate("ProductItem", { data: item }) }}>
                                         <LoadingImage
                                             source={{ uri: item.picture || "https://buykeyz.s3.ap-south-1.amazonaws.com/products/1743680742209.jpg" }}
-                                            style={{ width: '100%', height: Metrics.height * 0.17, resizeMode: "center" }}
+                                            style={{ width: '100%', height: Metrics.height * 0.17, contentFit: "center" }}
                                         />
                                         <Text style={{ fontSize: 16, fontWeight: 700, paddingLeft: 5, marginTop: 5 }} numberOfLines={1}>{item.name}</Text>
                                         <Text style={[TextStyles.TEXTSTYLE_C20, {

@@ -231,8 +231,8 @@ const LoginPage = () => {
                       width: Metrics.rfv(120), // Take up the full width of the parent
                       height: Metrics.rfv(120),
                       borderRadius: Metrics.rfv(120) / 2,
-                      resizeMode: 'contain', // Maintain aspect ratio without stretching
-                      // resizeMode: 'cover', // Maintain aspect ratio without stretching
+                      contentFit: 'contain', // Maintain aspect ratio without stretching
+                      // contentFit: 'cover', // Maintain aspect ratio without stretching
                     }}
                   />
                   <TouchableOpacity

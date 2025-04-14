@@ -162,7 +162,7 @@ const RegisterPage = () => {
                         contentContainerStyle={{ flex: 1, }}
                     >
                         <View style={{ flex: 1, }}>
-                        <TouchableOpacity style={{
+                        {/* <TouchableOpacity style={{
                                 position: 'absolute',
                                 marginTop: Metrics.rfv(20), marginLeft: LEFT_AND_RIGHT_PADDING, borderRadius: 30,
                                 // backgroundColor: "red",
@@ -175,6 +175,32 @@ const RegisterPage = () => {
                                 <View style={{
                                     // position: 'absolute',
                                     // marginTop: Metrics.rfv(20), marginLeft: LEFT_AND_RIGHT_PADDING, 
+                                    borderRadius: 30,
+                                    backgroundColor: PRIMARY_LIGHT_COLOR,
+
+                                }}>
+                                    <BackIcon />
+
+                                </View>
+                            </TouchableOpacity> */}
+
+
+                            <TouchableOpacity style={{
+                                position: 'absolute',
+                                // marginTop: Metrics.rfv(20),
+                                // marginLeft: LEFT_AND_RIGHT_PADDING,
+                                 borderRadius: 30,
+                                // backgroundColor: "red",
+                                // padding: 5,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+
+                            }}
+                                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                                onPress={() => { navigation.goBack() }}>
+                                <View style={{
+                                    // position: 'absolute',
+                                    marginTop: Metrics.rfv(20), marginLeft: LEFT_AND_RIGHT_PADDING,
                                     borderRadius: 30,
                                     backgroundColor: PRIMARY_LIGHT_COLOR,
 

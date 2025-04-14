@@ -162,7 +162,7 @@ const CarouselsBasicItem = ({ item, CarouselWidth, containerHeight, keymm }) => 
         style={{
           width: '100%', // Take up the full width of the parent
           height: '100%',
-          resizeMode: 'contain', // Maintain aspect ratio without stretching
+          contentFit: 'contain', // Maintain aspect ratio without stretching
         }}
       />
     </TouchableOpacity>

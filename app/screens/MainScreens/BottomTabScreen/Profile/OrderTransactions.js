@@ -123,7 +123,7 @@ const ChangePassword = () => {
                                                     source={{ uri: item.picture1 }}
                                                     style={{
                                                         width: '100%', height: Metrics.height * 0.2,
-                                                        resizeMode: "center"
+                                                        contentFit: "center"
                                                     }}
                                                 />
                                             </View>

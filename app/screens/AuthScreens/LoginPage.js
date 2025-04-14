@@ -30,7 +30,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { MainLogoutSystem } from '../../utils/LogOutHandle'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const LoginPage = () => {
+const LoginPage = ({ route }) => {
 
     const [errorFormAPI, seterrorFormAPI] = useState("")
     const [refreshing, setRefreshing] = useState(false)
@@ -50,6 +50,9 @@ const LoginPage = () => {
         }, 1000)
     }
     const insets = useSafeAreaInsets();
+
+
+
 
 
 
@@ -133,7 +136,7 @@ const LoginPage = () => {
             email: "",
             password: "",
             fcmToken: "",
-            type:Platform.OS
+            type: Platform.OS
         },
 
         onSubmit: values => {
@@ -155,7 +158,7 @@ const LoginPage = () => {
 
 
 
-console.log("values.type",values.type)
+    console.log("values.type", values.type)
     const submitHandler = async (values) => {
         seterrorFormAPI()
         setSpinnerbool(true)
@@ -191,6 +194,7 @@ console.log("values.type",values.type)
                         if (status) {
                             toast.show(message)
                             dispatch(setToken(token));
+
                         }
                     })
                 }
@@ -230,7 +234,38 @@ console.log("values.type",values.type)
             setSpinnerbool(false)
         }
     }
-   
+
+
+
+    const handleGuestContinue = () => {
+        try {
+            // const res=await 
+            AsyncStorage_Calls.setAsyncValue("Token", JSON.stringify("GuestLogin"), function (res, status) {
+                if (status) {
+                    // toast.show("GuestLogin")
+                    dispatch(setToken("GuestLogin"));
+                }
+            })
+        } catch (error) {
+            console.log("Error in handleGuestContinue")
+        } finally {
+            setSpinnerbool(false)
+        }
+    }
+
+
+    useEffect(() => {
+        AsyncStorage_Calls.getAsyncValue('NextNavigation', (error, token) => {
+            if (error) {
+                console.log('Error getting token:', error);
+            } else if (token) {
+                console.log("Ds", token)
+            }
+        })
+    }, [])
+
+
+
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
             <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
@@ -330,6 +365,28 @@ console.log("values.type",values.type)
                                     onPress={() => { handleSubmit() }}
                                     style={{ marginTop: 50 }}>
                                     Login
+                                </CustomButton>
+
+                                <CustomButton
+                                    // boxWidth={'95%'}
+                                    bgColor={PRIMARY_COLOR}
+                                    onPress={() => {
+                                        Alert.alert(
+                                            "Continue as Guest",
+                                            "You can now browse products without signing in. Sign in later to save items or check out.",
+                                            [
+                                                {
+                                                    text: "OK",
+                                                    onPress: () => {
+                                                        // Your method here
+                                                        handleGuestContinue(); // Replace with your actual function
+                                                    }
+                                                }
+                                            ]
+                                        );
+                                    }}
+                                    style={{ marginTop: 50 }}>
+                                    Continue as Guest
                                 </CustomButton>
 
 

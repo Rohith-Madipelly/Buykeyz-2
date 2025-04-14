@@ -19,8 +19,7 @@ export const LogOutHandle = async (dispatch) => {
           try {
 
 
-            console.log("dvs",)
-            dispatch(setToken(""));
+            MainLogoutSystem(dispatch)
           } catch (e) {
             console.log("error", e);
           }

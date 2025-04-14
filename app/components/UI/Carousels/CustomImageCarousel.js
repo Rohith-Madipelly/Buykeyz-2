@@ -9,7 +9,7 @@ const CustomImageCarousel = ({
     bannersData = [],
     autoPlay = true,
     onPress,
-    resizeMode = "cover",
+    contentFit = "cover",
     imageStyling,
     scrollAnimationDuration,
     showIndicators = false,
@@ -80,7 +80,7 @@ const CustomImageCarousel = ({
                         >
                             <Image
                                 source={{ uri: item?.picture || item }}
-                                resizeMode={resizeMode}
+                                contentFit={contentFit}
                                 style={[styles.image, imageStyling]}
                             />
                         </TouchableOpacity>

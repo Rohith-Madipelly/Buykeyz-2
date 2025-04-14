@@ -154,10 +154,35 @@ const LoginPage = () => {
       if (error.response.status === 400) {
         seterrorFormAPI({ passwordForm: `${error.response.data.message}` })
       }
-      else {
-        HandleCommonErrors(error)
+      else if (error.response.status === 401) {
+        if (tokenn == "GuestLogin") {
+          Alert.alert(
+            "Proceed as Guest",
+            "You're not signed in. You can continue in guest mode, but you'll need to log in.",
+            [
+
+              {
+                text: "Dismiss",
+                style: "cancel",
+                onPress: () => {
+                  navigation.goBack()
+                }
+              },
+              {
+                text: "OK",
+                onPress: () => {
+                  // Enable guest mode
+                  dispatch(setToken(""))
+                }
+              }
+            ]
+          )
+        }
+        else {
+          HandleCommonErrors(error)
+        }
+        setSpinnerbool(false)
       }
-      setSpinnerbool(false)
     }
     finally {
 
@@ -248,8 +273,8 @@ const LoginPage = () => {
                       width: Metrics.rfv(120), // Take up the full width of the parent
                       height: Metrics.rfv(120),
                       borderRadius: Metrics.rfv(120) / 2,
-                      resizeMode: 'contain', // Maintain aspect ratio without stretching
-                      // resizeMode: 'cover', // Maintain aspect ratio without stretching
+                      contentFit: 'contain', // Maintain aspect ratio without stretching
+                      // contentFit: 'cover', // Maintain aspect ratio without stretching
                     }}
                   />
                   <TouchableOpacity

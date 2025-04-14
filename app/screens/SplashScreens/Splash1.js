@@ -13,18 +13,6 @@ const gifAsset = Asset.fromModule(require('../../assets/gifs/BuyKeys SplashScree
 const Splash1 = () => {
 
     const navigation = useNavigation();
-    // useEffect(() => {
-    //     // Set a timer to navigate to the next screen after 10 seconds (10000 milliseconds)
-    //     const timer = setTimeout(() => {
-    //         navigation.navigate("Splash2");
-    //     }, 3000);
-
-    //     // Clear the timer if the component is unmounted
-    //     return () => clearTimeout(timer);
-    // }, []);
-
-
-
 
     useFocusEffect(
         useCallback(() => {
@@ -52,7 +40,7 @@ const Splash1 = () => {
                 />
 
             </View>
-        </SafeAreaView> 
+        </SafeAreaView>
     )
 }
 

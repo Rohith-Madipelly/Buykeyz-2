@@ -9,7 +9,7 @@ import Animated, {
   Extrapolate,
   Easing
 } from 'react-native-reanimated';
- 
+
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -20,8 +20,7 @@ export default function Splash2() {
   const progress = useSharedValue(0); // Initialize progress value
   const KycPageNum = useSelector((state) => state?.AccountSetUp?.PageCount);
   const navigation = useNavigation();
-      const [userStates, setUserStates] = useState(false)
-      const loginSelector = useSelector((state) => state.login.isLogin);
+  const loginSelector = useSelector((state) => state.login.isLogin);
 
 
   useEffect(() => {
@@ -57,23 +56,19 @@ export default function Splash2() {
     useCallback(() => {
 
       const timer = setTimeout(() => {
-        console.log("KycPageNum <><><> fv <>",KycPageNum)
+        console.log("KycPageNum <><><> fv <>", KycPageNum)
 
-        if(KycPageNum<=12){
-          console.log("Home",KycPageNum<=12)
+        if (KycPageNum <= 12) {
+          console.log("Home", KycPageNum <= 12)
 
-          if(loginSelector){
-      
+          if (loginSelector) {
             navigation.replace('BottomTabScreen')
-          }else{
+          } else {
             navigation.replace('Login')
           }
-          // navigation.replace('NextScreener', {
-          //   screen: 'BottomTabScreen',
-          // });
         }
-        else{
-          console.log("Home",KycPageNum<=12)
+        else {
+          console.log("Home", KycPageNum <= 12)
           navigation.replace('NextScreener', {
             screen: 'AccountSetupComponent',
           });
@@ -97,9 +92,9 @@ export default function Splash2() {
 
 
         // if (KycPageNum > 11) {
-          
+
         // } else {
-        
+
         // }
         // navigation.replace("BottomTabScreen");
       }, 2500);

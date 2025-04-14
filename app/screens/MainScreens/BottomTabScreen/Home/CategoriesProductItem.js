@@ -204,7 +204,7 @@ const CategoriesProductItem = ({ route }) => {
 
                                         <LoadingImage
                                             source={{ uri: item.picture }}
-                                            style={{ width: '100%', height: Metrics.height * 0.17, resizeMode: "center" }}
+                                            style={{ width: '100%', height: Metrics.height * 0.17, contentFit: "center" }}
                                         />
                                         <Text style={{ fontSize: 16, fontWeight: 700, paddingLeft: 5, marginTop: 5 }} numberOfLines={1}>{item.name}</Text>
                                         <Text style={[TextStyles.TEXTSTYLE_C20, {

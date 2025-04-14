@@ -104,12 +104,12 @@ const NotificationList = ({ route }) => {
                                 }
                                 else if (item.data.navigateTo) {
                                     try {
-                                        
+
                                         navigation.navigate(`${item.data.navigateTo}`)
                                     } catch (error) {
                                         navigation.navigate("BottomTabScreen")
                                     }
-                                }else {
+                                } else {
 
                                 }
                             }}
@@ -135,6 +135,11 @@ const NotificationList = ({ route }) => {
                             </View> */}
                             {/* <Text style={{ fontSize: Metrics.rfv(15), color: '#474464', fontWeight: 400,fontFamily:'Poppins-Medium',marginTop:10}}>LK</Text> */}
                         </TouchableOpacity>
+                    )}
+                    ListEmptyComponent={(
+                        <View style={{flex:1,justifyContent:'center',alignItems:'center',height:'100%'}}>
+                            <Text>No Notifications found</Text>
+                        </View>
                     )}
                 />
             </View>

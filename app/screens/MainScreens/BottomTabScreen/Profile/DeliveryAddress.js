@@ -63,8 +63,37 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.log("err", error.response.status)
-      if (error.response.status === 401) {
-        TokenLogoutAlert(dispatch)
+      if (error.response.status === 400) {
+        // TokenLogoutAlert(dispatch)
+      }
+      else if (error.response.status === 401) {
+        if (tokenn == "GuestLogin") {
+          Alert.alert(
+            "Proceed as Guest",
+            "You're not signed in. You can continue in guest mode, but you'll need to log in.",
+            [
+
+              {
+                text: "Dismiss",
+                style: "cancel",
+                onPress: () => {
+                  navigation.goBack()
+                }
+              },
+              {
+                text: "OK",
+                onPress: () => {
+                  // Enable guest mode
+                  dispatch(setToken(""))
+                }
+              }
+            ]
+          )
+        }
+        else {
+          HandleCommonErrors(error)
+        }
+        setSpinnerbool(false)
       }
       else {
         HandleCommonErrors(error)
@@ -96,6 +125,7 @@ const LoginPage = () => {
       if (error.response.status === 401) {
         TokenLogoutAlert(dispatch)
       }
+
       else {
         HandleCommonErrors(error)
       }

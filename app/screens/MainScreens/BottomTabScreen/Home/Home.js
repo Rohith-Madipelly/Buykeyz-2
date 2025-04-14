@@ -1,5 +1,5 @@
-import { Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import { Alert, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { useDispatch, useSelector } from 'react-redux'
 import GlobalStyles from '../../../../components/UI/config/GlobalStyles'
@@ -18,11 +18,15 @@ import Metrics from '../../../../utils/resposivesUtils/Metrics'
 import NextIcon from '../../../../assets/svg/NextIcon'
 import LoadingImage from '../../../../components/UI/ImageConatiners/LoadingImage'
 import HandleCommonErrors from '../../../../utils/HandleCommonErrors'
+import AsyncStorage_Calls from '../../../../utils/AsyncStorage_Calls'
 
 const Home = ({ route }) => {
     const { params } = route;
 
     let tokenn = useSelector((state) => state.login.token);
+
+
+
 
     const [refreshing, setRefreshing] = useState(false)
     const [show, setShow] = useState()
@@ -42,6 +46,7 @@ const Home = ({ route }) => {
 
 
 
+
     const ApiCaller = async () => {
 
         console.log("tokenn", tokenn)
@@ -52,7 +57,7 @@ const Home = ({ route }) => {
                 // setAPIData()
                 setTimeout(() => {
                     setAPIData(res?.data)
-                    
+
                 }, 500);
             }
 
@@ -62,7 +67,7 @@ const Home = ({ route }) => {
             if (error.response.status === 400) {
                 seterrorFormAPI({ passwordForm: `${error.response.data.message}` })
             } else if (error.response.status === 401) {
-                ServerTokenError_Logout(undefined,undefined, dispatch)
+                ServerTokenError_Logout(undefined, undefined, dispatch)
             }
             else {
                 HandleCommonErrors(error)
@@ -93,6 +98,13 @@ const Home = ({ route }) => {
         ApiCaller()
     }, []);
 
+
+    useEffect(() => {
+        if (tokenn == "GuestLogin") {
+            console.log("GuestLogin")
+        }
+    }, [])
+
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
             <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
@@ -118,7 +130,7 @@ const Home = ({ route }) => {
 
                             <Pressable onPress={() => {
                                 // MainLogoutSystem(dispatch)
-                                navigation.navigate('NotificationList') 
+                                navigation.navigate('NotificationList')
                             }} style={{ justifyContent: 'center' }}>
                                 <Image
                                     style={{ width: 25, height: 25, marginBottom: 10, marginRight: 10, marginTop: 10 }}
@@ -200,8 +212,8 @@ const Home = ({ route }) => {
                                                     width: '100%', height: '100%',
                                                     position: 'absolute',
                                                     top: 5,
-                                                    // resizeMode:'cover'
-                                                    resizeMode: 'contain'
+                                                    // contentFit:'cover'
+                                                    contentFit: 'contain'
                                                     // width: 30, height: 30
                                                 }}
 
@@ -251,7 +263,7 @@ const Home = ({ route }) => {
 
                                             <LoadingImage
                                                 source={{ uri: item.picture }}
-                                                style={{ width: '100%', height: Metrics.height * 0.17, resizeMode: "center" }}
+                                                style={{ width: '100%', height: Metrics.height * 0.17, contentFit: "center" }}
                                             />
                                             <Text style={{ fontSize: 16, fontWeight: 700, paddingLeft: 5, marginTop: 5, marginBottom: 3 }} numberOfLines={3}>{item.name}</Text>
                                             <Text style={[TextStyles.TEXTSTYLE_C20, {
