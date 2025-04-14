@@ -12,6 +12,7 @@ import { PageHandler } from '../AccoountVerificationScreen/ScreenMaintainer/Page
 
 
 import RazorpayCheckout from 'react-native-razorpay'
+import LoaderComponents from '../../../components/UI/Loadings/LoaderComponents'
 
 
 const SubscriptionList = ({ route }) => {
@@ -95,10 +96,11 @@ const SubscriptionList = ({ route }) => {
 
 
     const selectedPlan = async (item) => {
+        setSpinnerbool(true)
         console.log("dmnbd", item.planId)
         try {
 
-            setSpinnerbool(true)
+        
             const res = await SUBSCRIBE_TO_A_PLAN(item._id, tokenn)
             console.log("dhcvjahsvd", res.data.razorPayKey)
             if (res.status == 200) {
@@ -223,7 +225,10 @@ const SubscriptionList = ({ route }) => {
             <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
             <View style={{ flex: 1, marginTop: insets.top, marginBottom: insets.bottom }}>
                 <CustomToolKitHeader componentName={"Subscriptions"} backgroundColor={GlobalStyles.AppBackground} />
-                <ScrollView
+                <LoaderComponents
+                visible={spinnerBool}
+            />
+                 <ScrollView
                     contentContainerStyle={{ backgroundColor: GlobalStyles.AppBackground }}
                 >
                     {/* <View style={{ width: '100%', paddingHorizontal: LEFT_AND_RIGHT_PADDING, marginTop: 5 }}>

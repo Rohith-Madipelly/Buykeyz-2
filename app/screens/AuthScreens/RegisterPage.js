@@ -111,7 +111,7 @@ const RegisterPage = () => {
                 console.log("error console", error.response.status, " error.response", error.response.data.message)
                 if (error.response) {
                     if (error.response.status === 400) {
-                        seterrorFormAPI({ passwordForm: `${error.response.data.message}` })
+                        seterrorFormAPI({ emailForm: `${error.response.data.message}` })
                     }
                     else if (error.response.status === 401) {
                         seterrorFormAPI({ passwordForm: `${error.response.data.message}` })

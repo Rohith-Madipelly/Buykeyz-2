@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { useToast } from 'react-native-toast-notifications'
-import { GET_ALL_ADDRESSES_API, PAYOUT_CREATE_ORDER_API } from '../../../../network/ApiCalls'
+import { DELETE_ADDRESSES_API, GET_ALL_ADDRESSES_API, PAYOUT_CREATE_ORDER_API } from '../../../../network/ApiCalls'
 import GlobalStyles from '../../../../components/UI/config/GlobalStyles'
 import CustomStatusBar from '../../../../components/UI/CustomStatusBar/CustomStatusBar'
 import CustomToolKitHeader from '../../../../components/UI/CustomToolKitHeader'
@@ -15,11 +15,13 @@ import moment from 'moment'
 import CustomButton from '../../../../components/UI/Buttons/CustomButton'
 import RazorPayModule from '../../../../components/RazorPayModule/RazorPayModule'
 import { FontAwesome5 } from '@expo/vector-icons'
+import { scrollToTopY } from '../../../../utils/Scrolls'
+import LoaderComponents from '../../../../components/UI/Loadings/LoaderComponents'
 
 
 const CheckoutProduct = ({ route }) => {
     const productId = route.params?.productId || ""
-    const quantity = route.params?.quantity || ""
+    const quantity = route.params?.quantity || "" 
     const productData = route.params?.productData || ""
 
     const insets = useSafeAreaInsets();
@@ -225,6 +227,8 @@ const CheckoutProduct = ({ route }) => {
                 }
             }
 
+
+
         } catch (error) {
             console.log(error)
 
@@ -303,11 +307,10 @@ const CheckoutProduct = ({ route }) => {
 
             setTimeout(() => {
                 setSpinnerbool(false)
-            }, 50);
-
-            setTimeout(() => {
                 setRefreshing(false);
-            }, 50)
+            }, 500);
+
+      
         }
     }
 
@@ -315,10 +318,11 @@ const CheckoutProduct = ({ route }) => {
     const DeleteAddress = async (id) => {
         console.log("sdjbchs", id)
         if (selectLocation._id == id) {
-            console.log("dhvshvjs")
+            console.log("dhvshvjs fff")
         }
         try {
             setSpinnerbool(true)
+            console.log("fdjhb")
             const res = await DELETE_ADDRESSES_API(id, tokenn)
             if (res) {
                 console.log(" wekkj", res.data)
@@ -399,11 +403,8 @@ const CheckoutProduct = ({ route }) => {
 
             setTimeout(() => {
                 setSpinnerbool(false)
-            }, 50);
-
-            setTimeout(() => {
                 setRefreshing(false);
-            }, 50)
+            }, 300);
         }
     }
 
@@ -415,7 +416,9 @@ const CheckoutProduct = ({ route }) => {
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
             <CustomStatusBar barStyle={GlobalStyles.AuthScreenStatusBar1.barStyle} backgroundColor={GlobalStyles.AuthScreenStatusBar1.color} hidden={GlobalStyles.AuthScreenStatusBar1.hiddenSettings} />
             <View style={{ flex: 1, marginTop: insets.top, marginBottom: insets.bottom }}>
-
+            <LoaderComponents
+                visible={spinnerBool}
+            />
                 <CustomToolKitHeader componentName={"Checkout"} />
                 <View style={{ width: '100%', height: '100%', }}>
                     <ScrollView

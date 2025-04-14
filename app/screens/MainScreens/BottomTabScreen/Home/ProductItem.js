@@ -14,6 +14,7 @@ import { scrollToTop } from '../../../../utils/Scrolls'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { setToken } from '../../../../redux/actions/LoginAction'
 import AsyncStorage_Calls from '../../../../utils/AsyncStorage_Calls'
+import SkeletonLoader2 from '../../../../components/UI/Loadings/SkeletonLoader2'
 
 const ProductItem = ({ route }) => {
 
@@ -287,7 +288,7 @@ const ProductItem = ({ route }) => {
                     // contentContainerStyle={{ height:'100%' }}
                     >
                         <View style={{ overflow: 'hidden', alignItems: 'center' }}>
-                            {APIData && <CustomImageCarousel
+                            {APIData ? <CustomImageCarousel
                                 width={Metrics.width}
                                 height={Metrics.width >= 1032 ? 600 : Metrics.width}
                                 bannersData={APIData.pictures}
@@ -297,7 +298,11 @@ const ProductItem = ({ route }) => {
                                 onPress={(e) => {
                                     console.log("Hello e", e)
                                 }}
-                            />}
+                            /> : <>
+                                <SkeletonLoader2 style={{ width: Metrics.width * 0.9, height: Metrics.width >= 1032 ? 600 : Metrics.width, borderRadius: 10 }}>
+
+                                </SkeletonLoader2>
+                            </>}
                         </View>
 
                         <View style={{ flex: 0.6, backgroundColor: '#FFFFFF' }}>
@@ -306,13 +311,30 @@ const ProductItem = ({ route }) => {
                                 {/* Product Header */}
                                 <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <View style={{ width: '60%' }}>
-                                        <Text style={[TextStyles.TEXTSTYLE_C20, { color: '#121212', width: '100%', fontWeight: 800, fontSize: 20, marginBottom: 2 }]}
+                                        {APIData.name ? <Text style={[TextStyles.TEXTSTYLE_C20, { color: '#121212', width: '100%', fontWeight: 800, fontSize: 20, marginBottom: 2 }]}
                                         // numberOfLines={4}
                                         >
                                             {/* {APIData.brand}   */}
                                             {APIData.name}
                                             {APIData.model}
-                                        </Text>
+                                        </Text> : <View style={{ gap: 5 }}>
+                                            <SkeletonLoader2
+                                                style={[{
+                                                    width: '80%',
+                                                    borderRadius: 10,
+
+                                                }]}>
+                                            </SkeletonLoader2>
+
+
+                                            <SkeletonLoader2
+                                                style={[{
+                                                    width: '80%',
+                                                    borderRadius: 10
+                                                }]}>
+                                            </SkeletonLoader2>
+
+                                        </View>}
                                         {/* {true ? <Text style={[TextStyles.TEXTSTYLE_C12, { color: '#2E7928', fontWeight: 800 }]}> No Cost EMI Available</Text> :
                                             <Text style={[TextStyles.TEXTSTYLE_C12, { color: '#A9A9A9', fontWeight: 800 }]}> No Cost EMI NOT Available</Text>} */}
 
@@ -383,9 +405,25 @@ const ProductItem = ({ route }) => {
                                     </View>
                                 </View>
                                 <View style={{ padding: 10, paddingTop: 2 }}>
-                                    <Text numberOfLines={readMore ? 0 : 2}>{APIData?.description}
-                                    </Text>
-                                    <Text style={{ fontWeight: 700 }} onPress={() => { setReadMore(!readMore) }}>{readMore ? "read less" : "read more"}</Text>
+                                    {APIData?.description ? <Text numberOfLines={readMore ? 0 : 2}>{APIData?.description}
+                                    </Text> : <View style={{ gap: 5 }}><SkeletonLoader2
+                                        style={[{
+                                            width: '100%',
+
+                                            borderRadius: 10,
+
+                                        }]}>
+                                    </SkeletonLoader2>
+                                        <SkeletonLoader2
+                                            style={[{
+                                                width: '100%',
+
+                                                borderRadius: 10,
+
+                                            }]}>
+                                        </SkeletonLoader2>
+                                    </View>}
+                                    {APIData?.description && <Text style={{ fontWeight: 700 }} onPress={() => { setReadMore(!readMore) }}>{readMore ? "read less" : "read more"}</Text>}
 
                                 </View>
 
@@ -431,8 +469,8 @@ const ProductItem = ({ route }) => {
 
                                         if (tokenn == "GuestLogin") {
                                             Alert.alert(
-                                                "Proceed as Guest",
-                                                "You're not signed in. You can continue in guest mode, but you'll need to log in to complete your purchase.",
+                                                "Login Required",
+                                                "You need to be signed in to buy products or access this feature.",
                                                 [
 
                                                     {
@@ -441,7 +479,7 @@ const ProductItem = ({ route }) => {
                                                         // onPress: () => {
                                                         // //   navigation.goBack()
                                                         // }
-                                                      },
+                                                    },
                                                     {
                                                         text: "OK",
                                                         onPress: () => {
@@ -549,6 +587,27 @@ const ProductItem = ({ route }) => {
                                 }
                                 )}
 
+                                {!APIData2 && [1, 2, 3, 4, 5].map((item, index) => {
+                                    return (<SkeletonLoader2
+                                        key={index}
+                                        style={[{
+                                            // backgroundColor: 'white', 
+                                            width: '48%', margin: 3, borderRadius: 10, paddingBottom: 5
+                                        },
+                                        {
+                                            // width: Metrics.width / 2.2,
+                                            height: 120,
+                                            borderRadius: 8,
+                                            marginHorizontal: 5,
+                                            flexDirection: 'row',
+                                            position: 'relative',
+                                            justifyContent: 'center',
+                                        }]}>
+
+
+                                    </SkeletonLoader2>)
+                                }
+                                )}
                             </ScrollView>
 
 

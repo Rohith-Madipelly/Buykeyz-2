@@ -40,7 +40,8 @@ const PanNumber = () => {
     } = useFormik({
         // initialValues: { name: "ROHITH", panLastName: "MADIPELLY", panPhoneNumber: "9951072005", panDoB: "13022001", panPinCode: "506002", panNumber: "GPXPM2823D" },
         initialValues: {
-            name: "VISHWESH KUSUMA", panNumber: "KPCPK2881G"
+            // name: "VISHWESH KUSUMA", panNumber: "KPCPK2881G"
+            name: "", panNumber: ""
         },
 
         onSubmit: values => {

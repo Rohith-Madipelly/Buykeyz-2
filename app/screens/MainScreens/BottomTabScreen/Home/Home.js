@@ -1,4 +1,4 @@
-import { Alert, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, BackHandler, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,7 +35,7 @@ const Home = ({ route }) => {
     const insets = useSafeAreaInsets();
 
     const [APIData, setAPIData] = useState(false)
-    const [Loading, setLoading] = useState(false)
+    const [Loading, setLoading] = useState(true)
 
 
     const buttonHandler = () => {
@@ -44,10 +44,34 @@ const Home = ({ route }) => {
 
 
 
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert(
+          "Exit App",
+          "Are you sure you want to exit?",
+          [
+            { text: "Cancel", onPress: () => null, style: "cancel" },
+            { text: "OK", onPress: () => BackHandler.exitApp() },
+          ],
+          { cancelable: false }
+        );
+        return true; // Prevent going back
+      };
+
+      // Add the back handler listener
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      // Cleanup the listener when the screen is unfocused
+      return () => BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [])
+  );
+
+
 
 
     const ApiCaller = async () => {
-        setLoading(true)
+        // setLoading(true)
         try {
             const res = await HomeAPI(tokenn)
             if (res.data) {
@@ -93,22 +117,6 @@ const Home = ({ route }) => {
         setRefreshing(true);
         ApiCaller()
     }, []);
-
-
-    useEffect(() => {
-        if (tokenn == "GuestLogin") {
-            console.log("GuestLogin")
-        }
-    }, [])
-
-
-    // if (Loading) {
-    //     return (
-    //         <View>
-
-    //         </View>
-    //     )
-    // }
 
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>

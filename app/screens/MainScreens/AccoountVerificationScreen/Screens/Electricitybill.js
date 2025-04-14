@@ -42,7 +42,8 @@ const Electricitybill = () => {
     } = useFormik({
         initialValues: {
             // ElectricityBillFile: null 
-            billNumber: "101256826",
+            // billNumber: "101256826",
+            billNumber: "",
             state: ""
         },
 

@@ -27,6 +27,7 @@ import LoadingImage from '../../../../components/UI/ImageConatiners/LoadingImage
 import ImageSelectorBottomSheet from '../../../../components/UI/CustomBottomSheets/ImageSelectorBottomSheet'
 import { RegisterPageYupSchema } from '../../../../formikYupSchemas/Auth/RegisterPageYupSchema'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { ServerTokenError_Logout } from '../../../../utils/LogOutHandle'
 const LoginPage = () => {
 
   const [refreshing, setRefreshing] = useState(false)
@@ -207,6 +208,9 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.log("efv", error.response)
+     if (error.response.status === 401) {
+        ServerTokenError_Logout(undefined, undefined, dispatch)
+    }
     } finally {
       // setSpinnerbool(false)
     }

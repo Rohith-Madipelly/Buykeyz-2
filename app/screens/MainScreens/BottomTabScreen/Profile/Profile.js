@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { LogOutHandle } from '../../../../utils/LogOutHandle';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomToolKitHeader from '../../../../components/UI/CustomToolKitHeader';
@@ -15,6 +15,10 @@ import Constants from "expo-constants";
 import LoaderComponents from '../../../../components/UI/Loadings/LoaderComponents';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { setToken } from '../../../../redux/actions/LoginAction';
+import DeleteConfirmationModal from '../../../../components/Models/DeleteConfirmationModal';
+import { USER_PROFILE_API, UserDeleteApi } from '../../../../network/ApiCalls';
+import HandleCommonErrors from '../../../../utils/HandleCommonErrors';
+import { useToast } from 'react-native-toast-notifications';
 
 
 
@@ -169,19 +173,94 @@ const Profile = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch()
   const [canNavigate, setCanNavigate] = useState(true)
-
+  const [loading, setLoading] = useState(false)
+  const [personalDetailsAPI, setPersonalDetailsAPI] = useState(true)
+  const toast = useToast()
 
   useEffect(() => {
     if (tokenn == "GuestLogin") {
       console.log("GuestLogin")
       setCanNavigate(false)
     }
+
+
+    // subscriptionAccess
+
+
   }, [])
+
+    useFocusEffect(
+      useCallback(() => {
+        ApiCaller()
+      }, [])
+    )
+  
+
+  const ApiCaller = async () => {
+
+    try {
+      const res = await USER_PROFILE_API(tokenn)
+      if (res) {
+        console.log("dcvd", res.data.profileDetails)
+        setPersonalDetailsAPI(res.data.profileDetails.subscriptionAccess == "Inactive" ? true : false)
+      }
+
+    } catch (error) {
+    }
+    finally {
+    }
+  }
+
+  const DeleteAccountApiCaller = async () => {
+    try {
+      setLoading(true)
+
+      const res = await UserDeleteApi(tokenn)
+      if (res.data) {
+        toast.show(res.data.message)
+        setTimeout(() => {
+          dispatch(setToken(""));
+        }, 200);
+      }
+    } catch (error) {
+      HandleCommonErrors(error)
+
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
+  const DeleteAccount = () => {
+    Alert.alert(
+      "Delete Account?",
+      "If you click Delete, your data will be permanently deleted and you won’t be able to log in again.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            // Perform deletion or cleanup logic here
+            // dispatch(deleteUserData());
+            DeleteAccountApiCaller()
+            // logout or guest mode
+          },
+        },
+      ]
+    );
+
+  }
+
+
 
   const SendOut = () => {
     Alert.alert(
-      "Proceed as Guest",
-      "You're not signed in. You can continue in guest mode, but you'll need to log in",
+      "Login Required",
+      "You need to be signed in to buy products or access this feature.",
       [
 
         {
@@ -192,7 +271,7 @@ const Profile = () => {
           // }
         },
         {
-          text: "OK",
+          text: "Login",
           onPress: () => {
             // Enable guest mode
             dispatch(setToken(""))
@@ -207,11 +286,12 @@ const Profile = () => {
     {
       title: 'Your account',
       subItems: [
-        { title: 'Account Details', logo: require("../../../../assets/images/Profile/edit.png"), 
-         
+        {
+          title: 'Account Details', logo: require("../../../../assets/images/Profile/edit.png"),
+
           onPress: () => {
             canNavigate ?
-            navigation.navigate('Edit_Account') : SendOut()
+              navigation.navigate('Edit_Account') : SendOut()
           }
         },
         {
@@ -271,7 +351,23 @@ const Profile = () => {
           // myIcon:<MaterialIcons name="policy" size={24} color="black" />,
           onPress: () => navigation.navigate('PrivacyPolicy')
         },
-        { title: 'Delete Account Policy', onPress: () => navigation.navigate('DeleteAccountPolicy') },
+        // { title: 'Delete Account Policy', 
+
+        //   onPress: () => {
+        //     canNavigate ?
+        //     navigation.navigate('DeleteAccountPolicy') : SendOut()
+        //   }
+        //  },
+        {
+          title: 'Delete Account',
+
+          onPress: () => {
+            canNavigate ?
+              personalDetailsAPI ?
+                DeleteAccount() :(toast.hideAll(), toast.show("You can't delete your account because you have an active subscription.")
+          ): SendOut()
+          }
+        },
         { title: 'Return and Refund Policy', onPress: () => navigation.navigate('ReturnAndRefendPolicy') },
         // { title: 'Disclaimer', onPress: () => console.log('Disclaimer pressed') },
         { title: 'Check Our Branches', onPress: () => navigation.navigate('Stores') },
@@ -280,7 +376,9 @@ const Profile = () => {
     { title: 'Logout', onPress: () => { LogOutHandle(dispatch); console.log('Logout pressed') } },
   ];
 
-  return <Menu items={menuItems} />;
+  return <>
+
+    <Menu items={menuItems} /></>;
 };
 
 

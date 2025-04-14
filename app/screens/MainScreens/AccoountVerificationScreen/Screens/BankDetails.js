@@ -45,7 +45,8 @@ const BankDetails = () => {
     } = useFormik({
         initialValues: {
             // beneficiaryAccountName:"", ifsc: "ICIC0004444", beneficiarybankName: "", accountNumber: "", beneficiaryAccountType: "", beneficiaryBranch: "",
-            ifsc: "INDB0000226", beneficiarybankName: "", accountNumber: "159951072005", beneficiaryBranch: "",
+            // ifsc: "INDB0000226", beneficiarybankName: "", accountNumber: "159951072005", beneficiaryBranch: "",
+            ifsc: "", beneficiarybankName: "", accountNumber: "", beneficiaryBranch: "",
         },
         onSubmit: values => {
             { submitHandler(values) }

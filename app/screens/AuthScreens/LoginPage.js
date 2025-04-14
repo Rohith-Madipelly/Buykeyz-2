@@ -376,6 +376,13 @@ const LoginPage = ({ route }) => {
                                             "You can now browse products without signing in. Sign in later to save items or check out.",
                                             [
                                                 {
+                                                    text: "Dismiss",
+                                                    style: "cancel",
+                                                    // onPress: () => {
+                                                    // //   navigation.goBack()
+                                                    // }
+                                                  },
+                                                {
                                                     text: "OK",
                                                     onPress: () => {
                                                         // Your method here

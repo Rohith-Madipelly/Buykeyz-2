@@ -49,19 +49,19 @@ const PlaceOrderSuccessfully = ({ route }) => {
 
 
 
-    // const handleClick = () => {
-    //     // Your button click logic
-    //     Alert.alert('Button clicked!');
-    //     // Reset autoClick state if you want to avoid multiple clicks
-    //     setAutoClick(false);
-    // };
+    const handleClick = () => {
+        // Your button click logic
+        Alert.alert('Button clicked!');
+        // Reset autoClick state if you want to avoid multiple clicks
+        setAutoClick(false);
+    };
 
     // Auto-click the button if autoClick state is true
-    // useEffect(() => {
-    //     if (autoClick) {
-    //         buttonHandler()
-    //     }
-    // }, [autoClick]);
+    useEffect(() => {
+        if (autoClick) {
+            buttonHandler()
+        }
+    }, [autoClick]);
     const insets = useSafeAreaInsets();
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>

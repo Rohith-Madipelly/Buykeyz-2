@@ -194,6 +194,10 @@ const ChangePassword = () => {
                                     <Text>No Transactions found !</Text>
                                 </View>
                             )}
+                            ListFooterComponent={(
+                                <View style={{height:100}}>
+                                    </View>
+                            )}
                             estimatedItemSize={10}
                         />
                     </View>

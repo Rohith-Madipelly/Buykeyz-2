@@ -11,6 +11,17 @@ export const Bank_Details_on_IFSC = async (IFSC_CODE) => {
 };
 
 
+
+// Login API DONE
+export const UserDeleteApi = async (token) => {
+  return await axios.post(`${GUEST_URL}/user/deleteaccount`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  } )
+}
+
+
 // Login API DONE
 export const UserLoginApi = async (loginFormReq) => {
   console.log("jdbjh",loginFormReq)
