@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { View, Image, StyleSheet, TouchableOpacity, Animated, Text } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import SkeletonLoader2 from "../Loadings/SkeletonLoader2";
@@ -62,29 +62,47 @@ const CustomImageCarousel = ({
     );
 
     return (
-        <View style={{ width, height: showIndicators ? height + 30 : height,maxHeight:maxHeight }}>
+        <View style={{ width, height: showIndicators ? height + 30 : height, maxHeight: maxHeight }}>
             {filteredPictures.length > 0 ? (
                 <Carousel
                     loop
                     width={width}
-                    height={height>maxHeight?maxHeight:height}
+                    height={height > maxHeight ? maxHeight : height}
                     autoPlay={autoPlay}
                     data={filteredPictures}
                     scrollAnimationDuration={scrollAnimationDuration || 2000}
                     onSnapToItem={(index) => scrollX.setValue(index * width)}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            onPress={() => onPress(item)}
-                            style={[styles.carouselItem, { width, height }]}
-                            disabled={disabledonPress}
-                        >
-                            <Image
-                                source={{ uri: item?.picture || item }}
-                                contentFit={contentFit}
-                                style={[styles.image, imageStyling]}
-                            />
-                        </TouchableOpacity>
-                    )}
+                    renderItem={({ item }) => {
+                        const [loading, setLoading] = useState(true);
+                        const imageSource = { uri: item?.picture || item };
+
+                        return (
+                            <TouchableOpacity
+                                onPress={() => onPress?.(item)}
+                                style={[styles.carouselItem, { width, height }]}
+                                disabled={disabledonPress}
+                                activeOpacity={0.9}
+                            >
+                                {loading && (
+                                    <SkeletonLoader2 style={[styles.image, imageStyling]} />
+                                )}
+                                <Image
+                                    source={imageSource}
+                                    style={[
+                                        styles.image,
+                                        imageStyling,
+                                        {
+                                            position: loading ? 'absolute' : 'relative',
+                                            opacity: loading ? 0 : 1,
+                                        },
+                                    ]}
+                                    resizeMode={contentFit}
+                                    onLoadStart={() => setLoading(true)}
+                                    onLoadEnd={() => setLoading(false)}
+                                />
+                            </TouchableOpacity>
+                        );
+                    }}
                     ref={CarouselRef}
                 />
             ) : (

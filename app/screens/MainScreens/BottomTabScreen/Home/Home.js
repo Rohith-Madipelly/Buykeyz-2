@@ -19,15 +19,12 @@ import NextIcon from '../../../../assets/svg/NextIcon'
 import LoadingImage from '../../../../components/UI/ImageConatiners/LoadingImage'
 import HandleCommonErrors from '../../../../utils/HandleCommonErrors'
 import AsyncStorage_Calls from '../../../../utils/AsyncStorage_Calls'
+import SkeletonLoader2 from '../../../../components/UI/Loadings/SkeletonLoader2'
 
 const Home = ({ route }) => {
     const { params } = route;
 
     let tokenn = useSelector((state) => state.login.token);
-
-
-
-
     const [refreshing, setRefreshing] = useState(false)
     const [show, setShow] = useState()
     const [errorFormAPI, seterrorFormAPI] = useState("")
@@ -36,7 +33,9 @@ const Home = ({ route }) => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const insets = useSafeAreaInsets();
+
     const [APIData, setAPIData] = useState(false)
+    const [Loading, setLoading] = useState(false)
 
 
     const buttonHandler = () => {
@@ -48,8 +47,7 @@ const Home = ({ route }) => {
 
 
     const ApiCaller = async () => {
-
-        console.log("tokenn", tokenn)
+        setLoading(true)
         try {
             const res = await HomeAPI(tokenn)
             if (res.data) {
@@ -78,11 +76,9 @@ const Home = ({ route }) => {
 
             setTimeout(() => {
                 setSpinnerbool(false)
-            }, 50);
-
-            setTimeout(() => {
+                setLoading(false)  
                 setRefreshing(false);
-            }, 50)
+            }, 50);
         }
     }
 
@@ -104,6 +100,15 @@ const Home = ({ route }) => {
             console.log("GuestLogin")
         }
     }, [])
+
+
+    // if (Loading) {
+    //     return (
+    //         <View>
+
+    //         </View>
+    //     )
+    // }
 
     return (
         <View style={{ flex: 1, backgroundColor: GlobalStyles.AuthScreenStatusBar1.color }}>
@@ -142,165 +147,221 @@ const Home = ({ route }) => {
                                 />
                             </Pressable>
                         </View>
+                        {Loading ? <View style={{ paddingHorizontal: 17 }}>
+                            <View style={{ width: '100%', height: '100%' }}>
+                                <SkeletonLoader2 style={{ width: '100%', height: Metrics.width * 0.5, borderRadius: 10 }}>
 
-                        <View style={{}}>
-                            {APIData && APIData?.allBanners?.length > 0 && <CustomImageCarousel
-                                width={Metrics.width}
-                                height={Metrics.width * 0.562}
-                                // height={Metrics.rfv(200)}
-                                scrollAnimationDuration={4000}
-                                bannersData={APIData?.allBanners}
-                                onPress={(e) => {
-                                    console.log("Hello e", e)
-                                    navigation.navigate("Stores")
-                                }}
-                                imageStyling={GlobalStyles.carouselDropDown}
-                                disabledonPress={true}
-                            // showIndicators={true} 
-                            />}
-                        </View>
-                        <View style={[{
-                            paddingHorizontal: 15,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 10
-                        }]}>
-                            <View>
-                                <Text style={[TextStyles.TEXTSTYLE_B16, { color: ' #07005B' }]}>Categories</Text>
-                            </View>
-                            <View style={{ paddingTop: 5 }}>
+                                </SkeletonLoader2>
+                                <View>
+                                    <ScrollView horizontal
+                                        showsHorizontalScrollIndicator={false}>
 
-                                <TouchableOpacity
-                                    onPress={() => { navigation.navigate("AllCategories") }}
-                                    style={{ alignContent: 'center', flexDirection: 'row' }}>
-                                    <Text style={[TextStyles.TEXTSTYLE_B12, { gap: 10, color: '#6D3AFF' }]}>See all
-
-                                    </Text>
-                                    <View style={{ alignItems: 'center', justifyContent: 'center', marginLeft: 5 }}>
-                                        <NextIcon />
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={{ width: '100%', paddingHorizontal: 15, height: Metrics.rfv(75), marginBottom: 10, }}>
-                            <ScrollView horizontal
-                                showsHorizontalScrollIndicator={false}>
-
-                                {APIData && APIData.allCategories && APIData.allCategories.map((item, index) => (
-                                    <TouchableOpacity
-                                        onPress={(e) => { navigation.navigate("CategoriesProductItem", { data: item }) }}
-                                        key={index} style={{
-                                            width: Metrics.rfv(125),
-                                            height: Metrics.rfv(56),
-                                            borderRadius: 8,
-
-                                            marginVertical: 7,
-                                            marginHorizontal: 5,
-                                            backgroundColor: '#CFCFCF',
-                                            padding: 3,
-                                            flexDirection: 'row',
-                                            position: 'relative'
-                                        }}>
-
-                                        <View style={{ height: '100%', justifyContent: 'center', width: '60%', paddingLeft: 7 }}>
-                                            <Text style={{ textAlignVertical: 'center', }} numberOfLines={2}>{item.name}</Text>
-                                        </View>
-                                        <View style={{ height: '100%', justifyContent: 'center', width: '50%', position: 'absolute', right: 2 }}>
-                                            <Image
-                                                source={{ uri: item.picture || "https://s3-alpha-sig.figma.com/img/8a80/8b51/d8b101a767c95de34bba5958846df892?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=W2fqfmP0iliBCAa-mv4RkcTxFOdB1YJbLa20Ht3K9zWLCqrf9K-v5axXPlEGeT8zFHhxeMIxkC-ZEQocrsnXjIv6hE79y1Ai6MsOLzY8Qp~8Q9UrZxAY6gLIYNSRKvEFymWrjCG5wQawZGCWs8iTkzStpGGXLM~A6VVp0jY8Be7sck7aC99BRd-HqdckRPoDq8KFKWUl0VJhwhx-UuoVFAbtL5ByWnn1RBLYy-rKxCya6-sMqNDmgjwnq~pNmrY04YQN2dOfbNQuHUfmRwZ6cSRpUOcgJeMfBrtRlaEFfYKWz0jmMvZUz9vS52b0XNKuo6oprElCqEjnwHqx0CXY-Q__" }}
+                                        {[1, 2, 3, 4, 5].map((item, index) => (
+                                            <SkeletonLoader2
+                                                key={index}
                                                 style={{
-                                                    width: '100%', height: '100%',
-                                                    position: 'absolute',
-                                                    top: 5,
-                                                    // contentFit:'cover'
-                                                    contentFit: 'contain'
-                                                    // width: 30, height: 30
-                                                }}
+                                                    width: Metrics.rfv(125),
+                                                    height: Metrics.rfv(56),
+                                                    borderRadius: 8,
 
-                                            />
-                                        </View>
-                                    </TouchableOpacity>))}
+                                                    marginVertical: 7,
+                                                    marginHorizontal: 5,
+                                                    // backgroundColor: '#CFCFCF',
+                                                    padding: 3,
+                                                    flexDirection: 'row',
+                                                    position: 'relative',
+                                                }}>
+                                            </SkeletonLoader2>))}
 
-                            </ScrollView>
-                        </View>
-                        <View style={[{
-                            paddingHorizontal: 15,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 5
-                        }]}>
-                            <View>
-                                <Text style={[TextStyles.TEXTSTYLE_B16, { color: ' #07005B' }]}>Popular Home Appliances</Text>
+                                    </ScrollView>
+                                </View>
+
+                                <View style={{ width: '100%', flexWrap: 'wrap', flexDirection: 'row', alignItems: 'center' }}>
+                                    {[1, 2, 3, 4, 5].map((item, index) => (
+                                        <SkeletonLoader2
+                                            key={index}
+                                            style={[{
+                                                width: '40%',
+                                                height: Metrics.rfv(140),
+                                                marginVertical: '3%',
+                                                marginHorizontal: '5%',
+                                                borderRadius: 10
+                                            }]}>
+
+
+                                        </SkeletonLoader2>
+                                    ))}
+                                </View>
+
+
+
+
                             </View>
-                            <View>
-                                <TouchableOpacity style={{ alignContent: 'center', flexDirection: 'row' }}
-                                    onPress={() => {
-                                    }}
-                                >
-                                </TouchableOpacity>
-                            </View>
                         </View>
+                            :
+                            <>
 
-                        <View style={[{
-                            paddingHorizontal: 15,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 10
-                        }]}>
+                                <View style={{}}>
+                                    {APIData && APIData?.allBanners?.length > 0 && <CustomImageCarousel
+                                        width={Metrics.width}
+                                        height={Metrics.width * 0.562}
+                                        // height={Metrics.rfv(200)}
+                                        scrollAnimationDuration={4000}
+                                        bannersData={APIData?.allBanners}
+                                        onPress={(e) => {
+                                            console.log("Hello e", e)
+                                            navigation.navigate("Stores")
+                                        }}
+                                        imageStyling={GlobalStyles.carouselDropDown}
+                                        disabledonPress={true}
+                                    // showIndicators={true} 
+                                    />}
+                                </View>
 
-                            <View style={{
-                                flexDirection: 'row',
-                                flexWrap: 'wrap',
-                                justifyContent: 'space-between',
-                                padding: 10,
-                            }}>
 
-                                {APIData && APIData.popularAppliances && APIData.popularAppliances.map((item, index) => (
-                                    <View
-                                        key={index}
-                                        style={[{ backgroundColor: 'white', width: '48%', margin: 3, borderRadius: 10, paddingBottom: 5 }, GlobalStyles.productBoxdropDownShadow2]}>
-                                        <TouchableOpacity style={{ margin: 3 }} onPress={() => { navigation.navigate("ProductItem", { data: item }) }}>
 
-                                            <LoadingImage
-                                                source={{ uri: item.picture }}
-                                                style={{ width: '100%', height: Metrics.height * 0.17, contentFit: "center" }}
-                                            />
-                                            <Text style={{ fontSize: 16, fontWeight: 700, paddingLeft: 5, marginTop: 5, marginBottom: 3 }} numberOfLines={3}>{item.name}</Text>
-                                            <Text style={[TextStyles.TEXTSTYLE_C20, {
-                                                color: '#E29547', width: '100%', fontWeight: 800, fontSize: 16, marginBottom: 2, paddingLeft: 5,
-                                                // marginTop:5 
-                                            }]}
-                                                numberOfLines={2}
-                                            >
-                                                ₹ {item?.discountedPrice?.toLocaleString('en-IN') || ""}
+                                <View style={[{
+                                    paddingHorizontal: 15,
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    marginBottom: 10
+                                }]}>
+                                    <View>
+                                        <Text style={[TextStyles.TEXTSTYLE_B16, { color: ' #07005B' }]}>Categories</Text>
+                                    </View>
+                                    <View style={{ paddingTop: 5 }}>
+
+                                        <TouchableOpacity
+                                            onPress={() => { navigation.navigate("AllCategories") }}
+                                            style={{ alignContent: 'center', flexDirection: 'row' }}>
+                                            <Text style={[TextStyles.TEXTSTYLE_B12, { gap: 10, color: '#6D3AFF' }]}>See all
+
                                             </Text>
-                                            {/* <Text style={[TextStyles.TEXTSTYLE_C12, { textDecorationLine: 'line-through', color: '#A4A4A4', paddingLeft: 5, }]}>
-                          {item?.originalPrice?.toLocaleString('en-IN') || ""} ₹ </Text> */}
+                                            <View style={{ alignItems: 'center', justifyContent: 'center', marginLeft: 5 }}>
+                                                <NextIcon />
+                                            </View>
                                         </TouchableOpacity>
                                     </View>
-                                ))}
-                            </View>
+                                </View>
+                                <View style={{ width: '100%', paddingHorizontal: 15, height: Metrics.rfv(75), marginBottom: 10, }}>
+                                    <ScrollView horizontal
+                                        showsHorizontalScrollIndicator={false}>
+
+                                        {APIData && APIData.allCategories && APIData.allCategories.map((item, index) => (
+                                            <TouchableOpacity
+                                                onPress={(e) => { navigation.navigate("CategoriesProductItem", { data: item }) }}
+                                                key={index} style={{
+                                                    width: Metrics.rfv(125),
+                                                    height: Metrics.rfv(56),
+                                                    borderRadius: 8,
+
+                                                    marginVertical: 7,
+                                                    marginHorizontal: 5,
+                                                    backgroundColor: '#CFCFCF',
+                                                    padding: 3,
+                                                    flexDirection: 'row',
+                                                    position: 'relative'
+                                                }}>
+
+                                                <View style={{ height: '100%', justifyContent: 'center', width: '60%', paddingLeft: 7 }}>
+                                                    <Text style={{ textAlignVertical: 'center', }} numberOfLines={2}>{item.name}</Text>
+                                                </View>
+                                                <View style={{ height: '100%', justifyContent: 'center', width: '50%', position: 'absolute', right: 2 }}>
+                                                    <Image
+                                                        source={{ uri: item.picture || "https://s3-alpha-sig.figma.com/img/8a80/8b51/d8b101a767c95de34bba5958846df892?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=W2fqfmP0iliBCAa-mv4RkcTxFOdB1YJbLa20Ht3K9zWLCqrf9K-v5axXPlEGeT8zFHhxeMIxkC-ZEQocrsnXjIv6hE79y1Ai6MsOLzY8Qp~8Q9UrZxAY6gLIYNSRKvEFymWrjCG5wQawZGCWs8iTkzStpGGXLM~A6VVp0jY8Be7sck7aC99BRd-HqdckRPoDq8KFKWUl0VJhwhx-UuoVFAbtL5ByWnn1RBLYy-rKxCya6-sMqNDmgjwnq~pNmrY04YQN2dOfbNQuHUfmRwZ6cSRpUOcgJeMfBrtRlaEFfYKWz0jmMvZUz9vS52b0XNKuo6oprElCqEjnwHqx0CXY-Q__" }}
+                                                        style={{
+                                                            width: '100%', height: '100%',
+                                                            position: 'absolute',
+                                                            top: 5,
+                                                            // contentFit:'cover'
+                                                            contentFit: 'contain'
+                                                            // width: 30, height: 30
+                                                        }}
+
+                                                    />
+                                                </View>
+                                            </TouchableOpacity>))}
+
+                                    </ScrollView>
+                                </View>
+                                <View style={[{
+                                    paddingHorizontal: 15,
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    marginBottom: 5
+                                }]}>
+                                    <View>
+                                        <Text style={[TextStyles.TEXTSTYLE_B16, { color: ' #07005B' }]}>Popular Home Appliances</Text>
+                                    </View>
+                                    <View>
+                                        <TouchableOpacity style={{ alignContent: 'center', flexDirection: 'row' }}
+                                            onPress={() => {
+                                            }}
+                                        >
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                <View style={[{
+                                    paddingHorizontal: 15,
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    marginBottom: 10
+                                }]}>
+
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        flexWrap: 'wrap',
+                                        justifyContent: 'space-between',
+                                        padding: 10,
+                                    }}>
+
+                                        {APIData && APIData.popularAppliances && APIData.popularAppliances.map((item, index) => (
+                                            <View
+                                                key={index}
+                                                style={[{ backgroundColor: 'white', width: '48%', margin: 3, borderRadius: 10, paddingBottom: 5 }, GlobalStyles.productBoxdropDownShadow2]}>
+                                                <TouchableOpacity style={{ margin: 3 }} onPress={() => { navigation.navigate("ProductItem", { data: item }) }}>
+
+                                                    <LoadingImage
+                                                        source={{ uri: item.picture }}
+                                                        style={{ width: '100%', height: Metrics.height * 0.17, contentFit: "center" }}
+                                                    />
+                                                    <Text style={{ fontSize: 16, fontWeight: 700, paddingLeft: 5, marginTop: 5, marginBottom: 3 }} numberOfLines={3}>{item.name}</Text>
+                                                    <Text style={[TextStyles.TEXTSTYLE_C20, {
+                                                        color: '#E29547', width: '100%', fontWeight: 800, fontSize: 16, marginBottom: 2, paddingLeft: 5,
+                                                        // marginTop:5 
+                                                    }]}
+                                                        numberOfLines={2}
+                                                    >
+                                                        ₹ {item?.discountedPrice?.toLocaleString('en-IN') || ""}
+                                                    </Text>
+                                                    {/* <Text style={[TextStyles.TEXTSTYLE_C12, { textDecorationLine: 'line-through', color: '#A4A4A4', paddingLeft: 5, }]}>
+                          {item?.originalPrice?.toLocaleString('en-IN') || ""} ₹ </Text> */}
+                                                </TouchableOpacity>
+                                            </View>
+                                        ))}
+                                    </View>
 
 
-                        </View>
+                                </View>
 
 
-                        {console.log("APIData >>", APIData.userExists)}
-                        {APIData && APIData?.userExists == "Active" && <TouchableOpacity onPress={() => {
-                            // PageHandler(1, dispatch)
-                            navigation.navigate("SubscriptionList")
-                        }} style={{
-                            paddingHorizontal: 15, borderRadius: 10, overflow: 'hidden', marginBottom: 10
-                        }}>
-                            <ImageBackground
-                                style={{ width: '100%', height: 150, marginBottom: 10 }}
-                                contentFit="fixed"
-                                // blurRadius={0.2}
-                                source={{ uri: APIData?.loanPicture }}
-                            >
-                            </ImageBackground>
-                        </TouchableOpacity>}
-
+                                {console.log("APIData >>", APIData.userExists)}
+                                {APIData && APIData?.userExists == "Active" && <TouchableOpacity onPress={() => {
+                                    // PageHandler(1, dispatch)
+                                    navigation.navigate("SubscriptionList")
+                                }} style={{
+                                    paddingHorizontal: 15, borderRadius: 10, overflow: 'hidden', marginBottom: 10
+                                }}>
+                                    <ImageBackground
+                                        style={{ width: '100%', height: 150, marginBottom: 10 }}
+                                        contentFit="fixed"
+                                        // blurRadius={0.2}
+                                        source={{ uri: APIData?.loanPicture }}
+                                    >
+                                    </ImageBackground>
+                                </TouchableOpacity>}
+                            </>}
                     </View>
                 </ScrollView>
             </View>
