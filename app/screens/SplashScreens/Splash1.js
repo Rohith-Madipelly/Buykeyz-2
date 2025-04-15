@@ -12,7 +12,7 @@ const gifAsset = Asset.fromModule(require('../../assets/gifs/BuyKeys SplashScree
 
 const Splash1 = () => {
 
-    const navigation = useNavigation();
+    const navigation = useNavigation(); 
 
     useFocusEffect(
         useCallback(() => {

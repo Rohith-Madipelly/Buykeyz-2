@@ -21,11 +21,12 @@ try {
 const initialState = {
   token: token || "",
   isLogin: token ? true : false,
+  isSplash:true
 };
 
 
 
-console.log("initialState of LoginReducer",initialState)
+console.log("initialState of LoginReducer", initialState)
 
 const LoginReducer = (state = initialState, action) => {
 
@@ -35,6 +36,11 @@ const LoginReducer = (state = initialState, action) => {
         ...state,
         token: action.token,
         isLogin: action.token ? true : false,
+      }
+    case "SET_SplashScreen":
+      return {
+        ...state,
+        isSplash: action.isSplash ? true : false,
       }
     default:
       return state;

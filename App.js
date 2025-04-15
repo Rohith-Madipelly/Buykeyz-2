@@ -10,7 +10,7 @@ import { createNavigationContainerRef,} from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Screen from './app/screens';
-
+import * as Notifications from 'expo-notifications';
 
 export default function App() {
 
@@ -19,6 +19,54 @@ export default function App() {
 
 
     const Stack = createNativeStackNavigator();
+
+
+
+  useEffect(() => {
+    // Register notification category actions
+    Notifications.setNotificationCategoryAsync('message', [
+      {
+        identifier: 'reply',
+        buttonTitle: 'Reply',
+        options: { opensAppToForeground: true },
+      },
+      {
+        identifier: 'mark_read',
+        buttonTitle: 'Mark as Read',
+        options: { opensAppToForeground: false },
+      },
+    ]);
+
+    // Handle notification responses when the app is in the background/closed
+    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+      // Check the action identifier that was clicked
+      if (response.actionIdentifier === 'reply') {
+        console.log('Reply action clicked');
+        // Perform relevant action (e.g., open the app to reply)
+      } else if (response.actionIdentifier === 'mark_read') {
+        console.log('Mark as read action clicked');
+        // Perform relevant action (e.g., mark message as read)
+      }
+    });
+
+    // Clean up the notification listener when the component is unmounted
+    return () => subscription.remove();
+  }, []);
+
+
+  Notifications.addNotificationResponseReceivedListener(response => {
+    const actionId = response.actionIdentifier;
+    const data = response.notification.request.content.data;
+  
+    if (actionId === 'reply') {
+      console.log('User tapped Reply');
+      // Maybe open a chat screen
+    } else if (actionId === 'mark-as-read') {
+      console.log('Marked as read:', data);
+      // Trigger backend or local state update
+    }
+  });
+  
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Provider store={store}>

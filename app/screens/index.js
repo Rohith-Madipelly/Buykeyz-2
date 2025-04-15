@@ -40,6 +40,8 @@ import ManageSubscriptions from './MainScreens/Subscriptions/ManageSubscriptions
 import AccountSetupComponent from './MainScreens/AccoountVerificationScreen/ScreenMaintainer/AccountSetupComponent';
 import RewardWinner from './MainScreens/BottomTabScreen/Rewards/RewardWinner';
 import ViewInvoicesSubscriptions from './MainScreens/Subscriptions/ViewInvoicesSubscriptions';
+import Splash1 from './SplashScreens/Splash1';
+import Splash2 from './SplashScreens/Splash2';
 
 
 
@@ -66,6 +68,7 @@ export default function Screen() {
     const [userStates, setUserStates] = useState(false)
     const dispatch = useDispatch();
     const loginSelector = useSelector((state) => state.login.isLogin);
+    const isSplashSelector = useSelector((state) => state.login.isSplash);
 
 
     const navigationRef = createNavigationContainerRef();
@@ -121,6 +124,8 @@ export default function Screen() {
     }, []);
 
 
+
+
     useEffect(() => {
         // Only proceed with navigation if the navigation is ready
 
@@ -135,8 +140,8 @@ export default function Screen() {
 
             const screenToNavigate = response?.notification?.request?.content?.data?.navigateTo || "Home";
             const screenToNavigateIos = response?.notification?.request?.trigger?.payload?.navigateTo || "Home";
-           
-            console.log(screenToNavigate,"screenToNavigate","screenToNavigateIos",screenToNavigateIos)
+
+            console.log(screenToNavigate, "screenToNavigate", "screenToNavigateIos", screenToNavigateIos)
             console.log("screenToNavigate> xx ", screenToNavigate)
 
             if (navigationRef.isReady()) {
@@ -169,7 +174,7 @@ export default function Screen() {
 
     // const navigationRef = createNavigationContainerRef();
     // const [isNavigationReady, setIsNavigationReady] = useState(true);
-
+    console.log("isSplashSelector",isSplashSelector)
     return (
         <NavigationContainer
             ref={navigationRef}
@@ -177,9 +182,9 @@ export default function Screen() {
             onLayout={onLayoutRootView}
         >
             <Stack.Navigator>
-
-                {/* <Stack.Screen name="Splash1" component={Splash1} options={{ headerShown: false }} />
-                <Stack.Screen name="Splash2" component={Splash2} options={{ headerShown: false }} /> */}
+ 
+                {isSplashSelector&&<Stack.Screen name="Splash1" component={Splash1} options={{ headerShown: false }} />}
+                {isSplashSelector&&<Stack.Screen name="Splash2" component={Splash2} options={{ headerShown: false }} />}
 
 
                 {userStates ? (

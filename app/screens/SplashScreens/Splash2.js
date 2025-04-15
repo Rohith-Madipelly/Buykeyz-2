@@ -13,15 +13,16 @@ import Animated, {
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from '../../assets/svg/Icon';
+import { setIsSplashScreenAction } from '../../redux/actions/AccountSetUpAction';
 
 export default function Splash2() {
   const progress = useSharedValue(0); // Initialize progress value
   const KycPageNum = useSelector((state) => state?.AccountSetUp?.PageCount);
   const navigation = useNavigation();
   const loginSelector = useSelector((state) => state.login.isLogin);
-
+const dispatch=useDispatch()
 
   useEffect(() => {
     // Set up an animation with different speeds
@@ -66,6 +67,10 @@ export default function Splash2() {
           } else {
             navigation.replace('Login')
           }
+          setTimeout(() => {
+            dispatch(setIsSplashScreenAction(false))
+            
+          }, 200);
         }
         else {
           console.log("Home", KycPageNum <= 12)
